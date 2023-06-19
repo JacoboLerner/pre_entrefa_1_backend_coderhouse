@@ -12,7 +12,7 @@ class ProductManager {
     {
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             console.log("Datos incompletos");
-            return null;git 
+            return null; 
         }
 
         const product = {
