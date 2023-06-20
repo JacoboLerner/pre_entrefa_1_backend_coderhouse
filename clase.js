@@ -1,6 +1,7 @@
 
 class ProductManager {
-    constructor() {
+    #id = 0;
+    constructor() {        
         this.products = [];
     }
 
@@ -8,36 +9,33 @@ class ProductManager {
         return this.products;
     }
 
-    addProduct({title,description,price,thumbnail,code,stock}) 
-    {
+    addProduct(product) { 
+        const {title,description,price,thumbnail,code,stock}= product;
+
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             console.log("Datos incompletos");
             return null; 
         }
 
-        const product = {
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock,
-            id:this.products.length+1
-        }
-
         // Verificar que el código no esté en uso
-        const productWithCode = this.products.find(product => product.code === code);
+        const productWithCode = this.products.find((product) => product.code === code);
         if (productWithCode) {
             throw new Error("El código del producto ya está en uso. Revisa que no hayan productos con el mismo código e intenta nuevamente.");
         }
-        this.products.push(product);
+        const newProduct ={
+            id:this.#id++,
+            ...product,
+        };
+        this.products.push(newProduct);
     }
+
     getProductById(productId){
         const product = this.products.find(product => product.id === productId);
         if(!product||undefined){
             throw new Error( "NOT FOUND. Por favor, ingrese un id válido.")
         } else if(product){
             console.log ("El producto "+ product.id +"," + product.title + " fue encontrado con exito");
+            return product;
         } 
     }
 
@@ -78,4 +76,4 @@ productManager.addProduct(televisor);
 
 
 
-productManager.getProductById(3); // Busque con un numero mayor de los productos registrados para dar el simulacro de error
+productManager.getProductById(2); // Busque con un numero mayor de los productos registrados para dar el simulacro de error
