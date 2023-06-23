@@ -1,22 +1,23 @@
 import fs from "fs/promises"
-const path ="./productos.json"
+
 
 
 class ProductManager {
     #id = 1;
-    constructor() {        
+    constructor(path) {        
         this.products=[];
+        this.path=path
     }
 
     getProducts = async () => {
-        const file = await fs.readFile(path, "utf-8");
+        const file = await fs.readFile(this.path, "utf-8");
         const products = JSON.parse(file)
         return products;
     }
 
     addProduct= async (product)=> { 
         try{
-            const file=await fs.readFile(path,"utf-8");
+            const file=await fs.readFile(this.path,"utf-8");
             const products=JSON.parse(file);
             const {title,description,price,thumbnail,code,stock}= product;
             this.products=products
@@ -34,7 +35,7 @@ class ProductManager {
                 ...product,
             };
             products.push(newProduct);
-            await fs.writeFile(path, JSON.stringify(products));
+            await fs.writeFile(this.path, JSON.stringify(products));
             return newProduct        
         }
         catch{(e)=>{
@@ -43,7 +44,7 @@ class ProductManager {
 
         }
         getProductById = async (productId)=>{
-                const file=await fs.readFile(path,"utf-8");
+                const file=await fs.readFile(this.path,"utf-8");
                 const products=JSON.parse(file);
                 const product = products.find(product => product.id === productId);
                 if(product){
@@ -55,7 +56,7 @@ class ProductManager {
                 }}
         
         updateProduct = async (id,obj) => {
-            const file = await fs.readFile(path,"utf-8");
+            const file = await fs.readFile(this.path,"utf-8");
             const products=JSON.parse(file);
             const indexProduct = products.findIndex(p=>p.id === id)
             if(indexProduct === -1){
@@ -63,15 +64,15 @@ class ProductManager {
             }
             const productUpdate = {...products[indexProduct],...obj}
             products.splice(indexProduct,1,productUpdate)
-            await fs.writeFile(path,JSON.stringify(products))
+            await fs.writeFile(this.path,JSON.stringify(products))
         }
         
         deleteProductbyId=async(deleteId)=>{
             try{
-                const file=await fs.readFile(path,"utf-8");
+                const file=await fs.readFile(this.path,"utf-8");
                 const products=JSON.parse(file);
                 const nuevoProductos=products.filter(product=>product.id!= deleteId)
-                await fs.writeFile(path, JSON.stringify(nuevoProductos));
+                await fs.writeFile(this.path, JSON.stringify(nuevoProductos));
                 nuevoProductos=products
                 return products
             }
@@ -80,7 +81,7 @@ class ProductManager {
 
 }
 
-const productManager = new ProductManager;
+const productManager = new ProductManager("./productos.json");
 
 const leche = {
     title: 'leche',
@@ -117,5 +118,5 @@ console.log(await productManager.getProducts())
 
 await productManager.getProductById(2); // Busque con un numero mayor de los productos registrados para dar el simulacro de error
 await productManager.deleteProductbyId(1);
-await productManager.updateProduct(4,{marca: "Argentina"})
-console.log(await productManager.getProducts())
+await productManager.updateProduct(4,{price: 5000})//Busca el articulo por Id y luego reemplaza o agrega ub objeto dependiendo que se argregue en segundo parametro
+console.log(await productManager.getProducts())//Array actualizado de productos con la eliminacion del producto elegido y la modificacion
