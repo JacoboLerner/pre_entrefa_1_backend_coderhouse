@@ -12,7 +12,11 @@ class ProductManager {
             const file=await fs.readFile(this.path, "utf-8");
             const products= JSON.parse(file);
             this.products=products;
-            this.#id = products[products.length-1].id + 1
+            if (products.length === 0) {
+                this.#id = 1
+            } else {
+                this.#id = products[products.length-1].id + 1
+            }
         }catch{
             console.log(`El archivo ${this.path} no existe, creando...`)
             await fs.writeFile(this.path, "[]");
