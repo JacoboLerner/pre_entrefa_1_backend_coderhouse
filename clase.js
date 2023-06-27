@@ -1,31 +1,32 @@
 import fs from "fs/promises"
 
-
-
 class ProductManager {
     #id = 1;
     constructor(path) {        
         this.products=[];
         this.path=path
+        this.loadData();
     }
+    loadData = async()=>{
+        try{
+            const file=await fs.readFile(this.path, "utf-8");
+            const products= JSON.parse(file);
+            this.products=products;
+            this.#id = products[products.length-1].id + 1
+        }catch{
+            console.log(`El archivo ${this.path} no existe, creando...`)
+            await fs.writeFile(this.path, "[]");
+            return [];
+        }
+    };
 
     getProducts = async () => {
-        const file = await fs.readFile(this.path, "utf-8");
-        const products = JSON.parse(file)
-        return products;
+        return this.products;
     }
 
     addProduct= async (product)=> { 
         try{
-            const file=await fs.readFile(this.path,"utf-8");
-            const products=JSON.parse(file);
             const {title,description,price,thumbnail,code,stock}= product;
-            this.products=products
-            if (products.length === 0) {
-                this.#id = 1
-            } else {
-                this.#id = products[products.length-1].id + 1
-            }
             if (!title || !description || !price || !thumbnail || !code || !stock) {
                 console.log("Datos incompletos");
                 return null; 
@@ -34,8 +35,8 @@ class ProductManager {
                 id:this.#id++,
                 ...product,
             };
-            products.push(newProduct);
-            await fs.writeFile(this.path, JSON.stringify(products));
+            this.products.push(newProduct);
+            await fs.writeFile(this.path, JSON.stringify(this.products,null,2));
             return newProduct        
         }
         catch{(e)=>{
@@ -44,9 +45,7 @@ class ProductManager {
 
         }
         getProductById = async (productId)=>{
-                const file=await fs.readFile(this.path,"utf-8");
-                const products=JSON.parse(file);
-                const product = products.find(product => product.id === productId);
+                const product = this.products.find(product => product.id === productId);
                 if(product){
                     console.log(product)
                     return product;
@@ -56,25 +55,21 @@ class ProductManager {
                 }}
         
         updateProduct = async (id,obj) => {
-            const file = await fs.readFile(this.path,"utf-8");
-            const products=JSON.parse(file);
-            const indexProduct = products.findIndex(p=>p.id === id)
+            const indexProduct = this.products.findIndex(p=>p.id === id)
             if(indexProduct === -1){
                 return 'Producto NO encontrado'
             }
-            const productUpdate = {...products[indexProduct],...obj}
-            products.splice(indexProduct,1,productUpdate)
-            await fs.writeFile(this.path,JSON.stringify(products))
+            const productUpdate = {...this.products[indexProduct],...obj}
+            this.products.splice(indexProduct,1,productUpdate)
+            await fs.writeFile(this.path,JSON.stringify(this.products,null,2))
         }
         
         deleteProductbyId=async(deleteId)=>{
             try{
-                const file=await fs.readFile(this.path,"utf-8");
-                const products=JSON.parse(file);
-                const nuevoProductos=products.filter(product=>product.id!= deleteId)
-                await fs.writeFile(this.path, JSON.stringify(nuevoProductos));
-                nuevoProductos=products
-                return products
+                const nuevoProductos=this.products.filter(product=>product.id!= deleteId)
+                await fs.writeFile(this.path, JSON.stringify(nuevoProductos,null,2));
+                this.products=nuevoProductos
+                return this.products
             }
             catch{(e)=>{console.log(e)}}
         }
@@ -117,6 +112,6 @@ await productManager.addProduct(televisor);
 console.log(await productManager.getProducts())
 
 await productManager.getProductById(2); // Busque con un numero mayor de los productos registrados para dar el simulacro de error
-await productManager.deleteProductbyId(1);
+await productManager.deleteProductbyId(3);
 await productManager.updateProduct(4,{price: 5000})//Busca el articulo por Id y luego reemplaza o agrega ub objeto dependiendo que se argregue en segundo parametro
 console.log(await productManager.getProducts())//Array actualizado de productos con la eliminacion del producto elegido y la modificacion
