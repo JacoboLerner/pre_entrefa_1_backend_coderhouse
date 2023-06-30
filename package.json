@@ -17,5 +17,9 @@
     "url": "https://github.com/JacoboLerner/pre_entrefa_1_backend_coderhouse/issues"
   },
   "homepage": "https://github.com/JacoboLerner/pre_entrefa_1_backend_coderhouse#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
+  }
 }

@@ -1,6 +1,6 @@
 import fs from "fs/promises"
 
-class ProductManager {
+export default class ProductManager {
     #id = 1;
     constructor(path) {        
         this.products=[];
@@ -24,8 +24,12 @@ class ProductManager {
         }
     };
 
-    getProducts = async () => {
-        return this.products;
+    getProducts = async (limit) => {
+        if (limit) {
+            return this.products.slice(0, limit);
+        } else {
+            return this.products;
+        }
     }
 
     addProduct= async (product)=> { 
@@ -55,7 +59,6 @@ class ProductManager {
                     return product;
                 } else{
                     console.log("El producto no existe")
-                    return "El producto no existe"
                 }}
         
         updateProduct = async (id,obj) => {
@@ -80,42 +83,7 @@ class ProductManager {
 
 }
 
-const productManager = new ProductManager("./productos.json");
 
-const leche = {
-    title: 'leche',
-    description: 'La Serenisima, la verdad lactea',
-    price: 500,
-    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSQUpV40AZGi1a0ERze4cDqAVEFcZMvdj5uQ&usqp=CAU',
-    code: 'IHwSeVHr9UlH3XANRIyE',
-    stock: 40
-}
 
-const playstation = {
-    title: 'PS5',
-    description: 'La revolucion esta aca',
-    price: 500000,
-    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxszX6ODgsUYH_hsUmMwdwI1Q271N7hXlB41W49q6Jx2dwqkSZ9176QsUKipNWTsJkJ0U&usqp=CAU',
-    code: '1UNGMsz9opopRIkGPt0y', //Pon el mismo codigo que en el producto de arriba para ver el error en consola 6CanoVg64jPxh3EWvhMm 1UNGMsz9opopRIkGPt0y
-    stock: 5 
-}
 
-const televisor = {
-    title: 'Televisor Led 40"',
-    description: 'Television LED 4K',
-    price: 1000,
-    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXVEqKbbkJ3FCHpbo8H2pXhbHIC5ekGonp5A&usqp=CAU',
-    code: '6CanoVg64jPxh3EWvhMm',
-    stock: 10
-}
 
-await productManager.addProduct(playstation);
-await productManager.addProduct(leche);
-await productManager.addProduct(televisor);
-
-console.log(await productManager.getProducts())
-
-await productManager.getProductById(2); // Busque con un numero mayor de los productos registrados para dar el simulacro de error
-await productManager.deleteProductbyId(3);
-await productManager.updateProduct(4,{price: 5000})//Busca el articulo por Id y luego reemplaza o agrega ub objeto dependiendo que se argregue en segundo parametro
-console.log(await productManager.getProducts())//Array actualizado de productos con la eliminacion del producto elegido y la modificacion
