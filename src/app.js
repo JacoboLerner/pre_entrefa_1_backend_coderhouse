@@ -24,12 +24,9 @@ export default class ProductManager {
         }
     };
 
-    getProducts = async (limit) => {
-        if (limit) {
-            return this.products.slice(0, limit);
-        } else {
-            return this.products;
-        }
+    getProducts = async () => {
+           return this.products;
+        
     }
 
     addProduct= async (product)=> { 

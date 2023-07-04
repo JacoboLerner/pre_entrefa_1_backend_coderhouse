@@ -9,7 +9,7 @@ app.get('/products', async (req, res) => {
     const limit = req.query.limit;
     let products;
     if (limit) {
-        products = await productManager.getProducts(Number(limit));
+        products = (await productManager.getProducts()).slice(0,limit);
     } else {
         products = await productManager.getProducts();
     }
