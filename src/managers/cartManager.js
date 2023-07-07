@@ -22,9 +22,9 @@ export default class CartManager {
         }
     };
 
-    async cartList(id) {
+    async cartList(cid) {
         try {
-        const cart = this.carts.find( cart => cart.id === parseInt(id));
+        const cart = this.carts.find( cart => cart.id == cid);
         return cart.products;
         } catch (error) {
         console.log(
@@ -56,8 +56,7 @@ export default class CartManager {
 
     async addToCart(cid,prod){
         try {
-            const idt = parseInt(cid);
-            const cart = this.carts.find((i) => i.id == idt);
+            const cart = this.carts.find((i) => i.id == cid);
             const index = this.carts.indexOf(cart);
             if (cart !== undefined){
                 const locate = this.carts[index].products.find(i => i.id == prod.id);

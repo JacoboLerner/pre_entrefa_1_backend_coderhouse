@@ -53,7 +53,6 @@ export default class ProductManager {
         getProductById = async (productId)=>{
                 const product = this.products.find(product => product.id === productId);
                 if(product){
-                    console.log(product)
                     return product;
                 } else{
                     console.log("El producto no existe")

@@ -18,7 +18,8 @@ cartRouter.post('/', async (req, res) => {
 
 cartRouter.get('/:cid', async (req, res) => {
     try{
-        const result= await CartService.cartList(req.params.cid)
+        const cid = Number(req.params.cid)
+        const result= await CartService.cartList(cid)
         res.send(result)
     }
     catch(e){
@@ -29,15 +30,22 @@ cartRouter.get('/:cid', async (req, res) => {
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     const cid = Number(req.params.cid)
     const pid = Number(req.params.pid)
-    const prod = await productManager.getProductById(pid);
-    if (prod){
-        const result = await CartService.addToCart(cid,prod);
-        result !== null
-        ? res.status(200).json({"success" : "Producto Agregado",result})
-        : res.status(404).json({"error": "Carrito no encontrado ID Inexistente"})
-    }else {
-        res.status(404).json({"error": "ID Ingresado Inexistente"})
-    }
+    try{
+        const prod = await productManager.getProductById(pid);
+        const productModificado={
+            id: prod.id
+        }
+        if (prod){
+            const result = await CartService.addToCart(cid,productModificado);
+            result !== null
+            ? res.status(200).send({"success" : "Producto Agregado",result})
+            : res.status(404).send({"error": "Carrito no encontrado ID Inexistente"})
+        }else {
+            res.status(404).send({"error": "ID Ingresado Inexistente"})
+        }
+    }catch(e){
+        res.status(502).send({ error: "Numero de producto incorrecto" });   
+        }
 })
 
 
