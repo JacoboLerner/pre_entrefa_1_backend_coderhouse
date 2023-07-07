@@ -22,7 +22,7 @@ export default class CartManager {
         }
     };
 
-    async cartList(cid) {
+    cartList = async(cid)=> {
         try {
         const cart = this.carts.find( cart => cart.id == cid);
         return cart.products;
@@ -33,7 +33,7 @@ export default class CartManager {
         }
     }
 
-    async createCart() {
+    createCart= async()=>{
         try {
         if (this.carts.length === 0) {
             this.#id = 1
@@ -54,7 +54,7 @@ export default class CartManager {
     }
 
 
-    async addToCart(cid,prod){
+    addToCart=async(cid,prod)=>{
         try {
             const cart = this.carts.find((i) => i.id == cid);
             const index = this.carts.indexOf(cart);
