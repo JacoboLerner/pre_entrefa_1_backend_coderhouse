@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "products": [
+      {
+        "id": 9,
+        "title": "Don Saturr",
+        "status": true,
+        "description": "La galletita de los Argentinos",
+        "price": 100,
+        "thumbnail": "gdhd",
+        "code": "dfnfdnfnfn",
+        "stock": 100,
+        "category": "alimentos",
+        "qty": 6
+      },
+      {
+        "id": 4,
+        "status": true,
+        "title": "leche",
+        "description": "La Serenisima, la verdad lactea",
+        "price": 500,
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSQUpV40AZGi1a0ERze4cDqAVEFcZMvdj5uQ&usqp=CAU",
+        "code": "IHwSeVHr9UlH3XANRIyE",
+        "stock": 40,
+        "category": "alimentos",
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "products": [
+      {
+        "id": 6,
+        "title": "Televisor Led 40",
+        "status": true,
+        "description": "Television LED 4K",
+        "price": 1000,
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXVEqKbbkJ3FCHpbo8H2pXhbHIC5ekGonp5A&usqp=CAU",
+        "code": "6CanoVg64jPxh3EWvhMm",
+        "stock": 10,
+        "category": "electrodomesticos",
+        "qty": 3
+      },
+      {
+        "id": 9,
+        "title": "Don Saturr",
+        "status": true,
+        "description": "La galletita de los Argentinos",
+        "price": 100,
+        "thumbnail": "gdhd",
+        "code": "dfnfdnfnfn",
+        "stock": 100,
+        "category": "alimentos",
+        "qty": 4
+      },
+      {
+        "id": 4,
+        "status": true,
+        "title": "leche",
+        "description": "La Serenisima, la verdad lactea",
+        "price": 500,
+        "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSQUpV40AZGi1a0ERze4cDqAVEFcZMvdj5uQ&usqp=CAU",
+        "code": "IHwSeVHr9UlH3XANRIyE",
+        "stock": 40,
+        "category": "alimentos",
+        "qty": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "products": []
+  },
+  {
+    "id": 4,
+    "products": []
+  },
+  {
+    "id": 5,
+    "products": []
+  },
+  {
+    "id": 6,
+    "products": []
+  },
+  {
+    "id": 7,
+    "products": []
+  },
+  {
+    "id": 8,
+    "products": []
+  },
+  {
+    "id": 9,
+    "products": []
+  },
+  {
+    "id": 10,
+    "products": []
+  }
+]

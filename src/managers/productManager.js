@@ -31,13 +31,14 @@ export default class ProductManager {
 
     addProduct= async (product)=> { 
         try{
-            const {title,description,price,thumbnail,code,stock}= product;
-            if (!title || !description || !price || !thumbnail || !code || !stock) {
+            const {title,description,price,thumbnail,code,stock,category}= product;
+            if (!title || !description || !price || !thumbnail || !code || !stock ||!category) {
                 console.log("Datos incompletos");
                 return null; 
             }   
             const newProduct ={
                 id:this.#id++,
+                status:true,
                 ...product,
             };
             this.products.push(newProduct);
@@ -59,7 +60,7 @@ export default class ProductManager {
                 }}
         
         updateProduct = async (id,obj) => {
-            const indexProduct = this.products.findIndex(p=>p.id === id)
+            const indexProduct = this.products.findIndex(p=>p.id == id)
             if(indexProduct === -1){
                 return 'Producto NO encontrado'
             }
