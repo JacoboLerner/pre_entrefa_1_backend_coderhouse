@@ -20,7 +20,7 @@ productsRouter.get('/:pid', async (req, res) => {
         if (product) {
             res.send(product);
         } else {
-            res.status(404).send({ error: "Product not found" });
+            res.status(502).send({ error: "Product not found" });
         }
         });
 

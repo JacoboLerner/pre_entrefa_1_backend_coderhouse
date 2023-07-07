@@ -25,7 +25,7 @@ export default class ProductManager {
     };
 
     getProducts = async () => {
-           return this.products;
+            return this.products;
         
     }
 
