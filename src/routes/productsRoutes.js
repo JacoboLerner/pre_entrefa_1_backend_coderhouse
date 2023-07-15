@@ -24,7 +24,7 @@ productsRouter.get('/:pid', async (req, res) => {
         }
         });
 
-productsRouter.post('/',async(req,res)=>{
+productsRouter.post('/',async(req,res,)=>{
         const body=req.body
         if (!body.title || !body.description || !body.price || !body.thumbnail || !body.code || !body.stock  || !body.category ){
             res.send({error:true, msg: "Contenido faltante"})

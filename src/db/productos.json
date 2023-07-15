@@ -79,23 +79,12 @@
   {
     "id": 10,
     "status": true,
-    "title": "PS4",
-    "description": "La revolucion esta aca",
-    "price": 400000,
-    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxszX6ODgsUYH_hsUmMwdwI1Q271N7hXlB41W49q6Jx2dwqkSZ9176QsUKipNWTsJkJ0U&usqp=CAU",
-    "code": "1UNGMsz9opopRIkGPt0y",
-    "stock": 5,
-    "category": "electrodomesticos"
-  },
-  {
-    "id": 11,
-    "status": true,
-    "title": "PS4",
-    "description": "La revolucion esta aca",
-    "price": 400000,
-    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxszX6ODgsUYH_hsUmMwdwI1Q271N7hXlB41W49q6Jx2dwqkSZ9176QsUKipNWTsJkJ0U&usqp=CAU",
-    "code": "1UNGMsz9opopRIkGPt0y",
-    "stock": 5,
-    "category": "electrodomesticos"
+    "title": "Yogurt",
+    "description": "Frutilla",
+    "code": "sbgbsbgb",
+    "price": "120",
+    "stock": "23",
+    "category": "fsdbdsb",
+    "thumbnail": "dfbsdbsdbsb"
   }
 ]

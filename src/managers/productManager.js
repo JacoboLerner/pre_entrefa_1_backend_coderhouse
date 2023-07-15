@@ -32,10 +32,14 @@ export default class ProductManager {
     addProduct= async (product)=> { 
         try{
             const {title,description,price,thumbnail,code,stock,category}= product;
+            const codeExist = this.products.find(i => i.code === product.code);
             if (!title || !description || !price || !thumbnail || !code || !stock ||!category) {
                 console.log("Datos incompletos");
                 return null; 
-            }   
+            }   else if(codeExist){
+                console.log("Ya existe producto con ese codigo!");
+                return null; 
+            }
             const newProduct ={
                 id:this.#id++,
                 status:true,
@@ -46,7 +50,7 @@ export default class ProductManager {
             return newProduct        
         }
         catch{(e)=>{
-            console.log(e)
+            console.log("Hubo un error en el ingreso de datos")
         } }
 
         }
