@@ -30,7 +30,6 @@ socket.on("products", data => {
 });
 
 
-// ------- form functions
 addProductForm.addEventListener('submit', (e) => {
     e.preventDefault();
 

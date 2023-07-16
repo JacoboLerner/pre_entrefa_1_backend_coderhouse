@@ -39,7 +39,7 @@ io.on('connection', async (socket) => {
     socket.on('new_prod', async (data) => {
       productManager.addProduct(data)
         
-        io.sockets.emit('products', await productManager.getProducts())
+        io.sockets.emit('products', await productManager.getProducts())     
     })
 
     socket.on('delete_prod',async (data) => {
