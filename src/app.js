@@ -31,20 +31,20 @@ app.use('/api/carts', cartRouter)
 io.on('connection', async (socket) => {
     console.log('se conecto un cliente');
     
-    io.sockets.emit('connected', (data) => {
+    socket.emit('connected', (data) => {
     console.log('connected with server')
 })
-    io.sockets.emit('products',await productManager.getProducts())
+    socket.emit('products',await productManager.getProducts())
 
     socket.on('new_prod', async (data) => {
       productManager.addProduct(data)
         
-        io.sockets.emit('products', await productManager.getProducts())     
+        socket.emit('products', await productManager.getProducts())     
     })
 
     socket.on('delete_prod',async (data) => {
       productManager.deleteProductbyId(data.pid)
 
-        io.sockets.emit('products',await productManager.getProducts())
+        socket.emit('products',await productManager.getProducts())
     })
 })
