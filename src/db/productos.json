@@ -11,17 +11,6 @@
     "category": "electrodomesticos"
   },
   {
-    "id": 2,
-    "title": "leche",
-    "status": true,
-    "description": "La Serenisima, la verdad lactea",
-    "price": 600,
-    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSQUpV40AZGi1a0ERze4cDqAVEFcZMvdj5uQ&usqp=CAU",
-    "code": "IHwSeVHr9UlH3XANRIyE",
-    "stock": 40,
-    "category": "alimentos"
-  },
-  {
     "id": 3,
     "title": "leche",
     "status": true,
@@ -86,5 +75,27 @@
     "stock": "23",
     "category": "fsdbdsb",
     "thumbnail": "dfbsdbsdbsb"
+  },
+  {
+    "id": 11,
+    "status": true,
+    "title": "Galletas de agua",
+    "description": "las mas blandas",
+    "code": "23tewrhgewhgewh3wh",
+    "price": "300",
+    "stock": "10",
+    "category": "alimentos",
+    "thumbnail": "wrgfegewgewgew"
+  },
+  {
+    "id": 12,
+    "status": true,
+    "title": "Camiseta de Messi",
+    "description": "El mejor llega a South Beach",
+    "code": "argentina",
+    "price": "300000",
+    "stock": "3",
+    "category": "deportes",
+    "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_721423-MLA69859139692_062023-O.webp"
   }
 ]
