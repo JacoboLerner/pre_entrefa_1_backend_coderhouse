@@ -1,10 +1,18 @@
 import { Router } from 'express';
-import CartManager from '../managers/cartManager.js';
-import ProductManager from '../managers/productManager.js';
+import CartManager from '../dao/mongo/cartManager.js';
+import ProductManager from '../dao/mongo/productManager.js';
 const cartRouter = new Router();
 const CartService = new CartManager('./src/db/carts.json')
 const productManager = new ProductManager('./src/db/productos.json');
 
+cartRouter.get('/', async (req, res) => {
+    try{
+        const result = await CartService.getCarts()
+        res.send(result)
+    }catch(e){
+        res.status(502).send({ error: "true" });   
+        }
+    })
 
 cartRouter.post('/', async (req, res) => {
     try{
@@ -18,8 +26,8 @@ cartRouter.post('/', async (req, res) => {
 
 cartRouter.get('/:cid', async (req, res) => {
     try{
-        const cid = Number(req.params.cid)
-        const result= await CartService.cartList(cid)
+        const cid = (req.params.cid)
+        const result= await CartService.getCartById(cid)
         res.send(result)
     }
     catch(e){
@@ -28,23 +36,13 @@ cartRouter.get('/:cid', async (req, res) => {
 })
 
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
-    const cid = Number(req.params.cid)
-    const pid = Number(req.params.pid)
     try{
-        const prod = await productManager.getProductById(pid);
-        const productModificado={
-            id: prod.id
-        }
-        if (prod){
-            const result = await CartService.addToCart(cid,productModificado);
-            result !== null
-            ? res.status(200).send({"success" : "Producto Agregado",result})
-            : res.status(404).send({"error": "Carrito no encontrado ID Inexistente"})
-        }else {
-            res.status(404).send({"error": "ID Ingresado Inexistente"})
-        }
+        const cid = req.params.cid
+        const pid = req.params.pid
+        const result = await CartService.addProductToCart(cid, pid)
+        res.status(201).send(result)
     }catch(e){
-        res.status(502).send({ error: "Numero de producto incorrecto" });   
+        res.status(502).send({ error: "Numero de producto/carrito incorrecto" });   
         }
 })
 

@@ -8,7 +8,7 @@ socket.on("connected", (data) => {
     console.log('connected with server')
 })
 
-socket.on("products", data => {
+socket.on("products", async (data) => {
     let lista = document.getElementById("listaProductos");
     let productos = ''
 
@@ -16,7 +16,7 @@ socket.on("products", data => {
 
     data.forEach((producto) => {
         productos = productos + `<tr>
-        <td> ${producto.id}            </td>
+        <td> ${producto._id}            </td>
         <td> ${producto.title}         </td>
         <td> ${producto.description}   </td>
         <td> ${producto.code}          </td>

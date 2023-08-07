@@ -1,21 +1,22 @@
 import { Router } from "express";
-import ProductManager from "../managers/productManager.js";
+import ProductManager from "../dao/mongo/productManager.js";
 const productManager = new ProductManager('./src/db/productos.json');
 const productsRouter = Router();
+import ProductModel from "../dao/models/product.schema.js";
 
 productsRouter.get('/', async (req, res) => {
-    const limit = req.query.limit;
-    let products;
-    if (limit) {
-        products = (await productManager.getProducts()).slice(0,limit);
-    } else {
-        products = await productManager.getProducts();
+    try{
+        const products= await ProductModel.find()
+        res.send(products);
+    }catch(e){
+        res.status(502).send({ error: "true" })
+        console.log(e);
     }
-    res.send(products);
+
     });
 
 productsRouter.get('/:pid', async (req, res) => {
-        const pid = Number(req.params.pid);
+        const pid = (req.params.pid);
         const product = await productManager.getProductById(pid);
         if (product) {
             res.send(product);
@@ -25,18 +26,16 @@ productsRouter.get('/:pid', async (req, res) => {
         });
 
 productsRouter.post('/',async(req,res,)=>{
-        const body=req.body
-        if (!body.title || !body.description || !body.price || !body.thumbnail || !body.code || !body.stock  || !body.category ){
-            res.send({error:true, msg: "Contenido faltante"})
-        }else{
         try{
-            const result= await productManager.addProduct(body)
+            const body=req.body
+           const result = await ProductModel.insertMany([body])
         res.send(result)
         }catch(e){
-        res.status(502).send({ error: "true" });
+        res.status(502).send({ error: "true" })
+        console.log(e);
         }
         }
-        })
+        )
     
 productsRouter.put('/:pid',async(req,res)=>{
         try{
