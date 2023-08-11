@@ -6,8 +6,37 @@ import ProductModel from "../dao/models/product.schema.js";
 
 productsRouter.get('/', async (req, res) => {
     try{
-        const products= await ProductModel.find()
-        res.send(products);
+        const { page, query, limit, order } = req.query;
+        let sortBy;
+        if(order === "desc") {
+            sortBy = -1;
+        } else if (order === "asc"){
+            sortBy = 1;
+        }
+        let products;
+        if (!query) {
+            products = await ProductModel.paginate(
+                {},
+                {
+                    limit: limit ?? 10,
+                    lean: true,
+                    page: page ?? 1,
+                    sort: { price: sortBy },
+                }
+            );
+        } else {
+            products = await ProductModel.paginate(
+                { category: query},
+                {
+                    limit: limit ?? 3,
+                    lean: true,
+                    page: page ?? 1,
+                    sort: { price: sortBy },
+                }
+            );
+        }
+        res.render("products", { products, query, order });
+        console.log(products)
     }catch(e){
         res.status(502).send({ error: "true" })
         console.log(e);

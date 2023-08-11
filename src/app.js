@@ -30,7 +30,9 @@ app.use(express.json());
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
 app.use('/api/products', productsRouter);
+// la siguiente ruta, agregandole el id de un cart,  contiene la vista para visualizar un carrito específico
 app.use('/api/carts', cartRouter)
+
 
 
 const messageManager = new messagesManagerDB();
@@ -55,6 +57,13 @@ io.on('connection', async (socket) => {
   
   socket.emit('connected', (data) => {
   console.log('connected with server')
+  socket.on("message", async (data) => {
+    let user = data.user;
+    let message = data.message;
+    await messageManager.addMessage(user, message)
+    const messages = await messageManager.getMessages();
+    socket.broadcast.emit("messageLogs", messages)
+})
 })
   socket.emit('products',await productManager.getProducts())
 
@@ -71,13 +80,6 @@ io.on('connection', async (socket) => {
       socket.emit('products',await productManager.getProducts())
   })
 
-  socket.on("message", async (data) => {
-    let user = data.user;
-    let message = data.message;
-    await messageManager.addMessage(user, message)
-    const messages = await messageManager.getMessages();
-    socket.emit("messageLogs", messages)
-})
 })
 
 

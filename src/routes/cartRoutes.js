@@ -16,7 +16,8 @@ cartRouter.get('/', async (req, res) => {
 
 cartRouter.post('/', async (req, res) => {
     try{
-        const result = CartService.createCart()
+        const products = req.body;
+        const result = await CartService.createCart(products)
         res.send(result)
     }catch(e){
         res.status(502).send({ error: "true" });   
@@ -24,16 +25,53 @@ cartRouter.post('/', async (req, res) => {
     })
 
 
-cartRouter.get('/:cid', async (req, res) => {
-    try{
-        const cid = (req.params.cid)
-        const result= await CartService.getCartById(cid)
-        res.send(result)
+cartRouter.get("/:cid", async (req, res) => {
+    try {
+        const cartID = req.params.cid;
+        const cart = await CartService.getCartById(cartID);
+        const products = cart.products;
+        const id = cart._id
+        res.render("cart", { products,id});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al obtener los datos");
     }
-    catch(e){
-        res.status(502).send({ error: "true" });   
-        }
-})
+});
+
+cartRouter.delete("/:cid/product/:pid", async (req, res) => {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const deleted = await CartService.deleteProdFromCart(cid, pid);
+    res.send(deleted);
+});
+
+cartRouter.delete("/:cid", async (req, res) => {
+    const cid = req.params.cid;
+    const deletedCart = await CartService.emptyCart(cid);
+    console.log(deletedCart);
+    res.send(deletedCart);
+});
+
+cartRouter.put("/:cid", async (req, res) => {
+    const cid = req.params.cid;
+    const prod = req.body;
+    console.log(cid, prod);
+    const updatedCart = await CartService.updateWholeCart(cid, prod);
+    console.log("a ver", updatedCart);
+    res.send(updatedCart);
+});
+
+cartRouter.put("/:cid/product/:pid", async (req, res) => {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const quantity = req.body.quantity;
+    const updatedQuantity = await CartService.updateQuantity(
+        cid,
+        pid,
+        quantity
+    );
+    res.send(updatedQuantity);
+});
 
 cartRouter.post('/:cid/product/:pid', async (req, res) => {
     try{

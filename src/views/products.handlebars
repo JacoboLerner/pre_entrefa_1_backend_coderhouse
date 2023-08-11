@@ -1,0 +1,35 @@
+<div>
+    <h1 class="p-3">List of Products</h1>  
+    <div class="row justify-content-center">        
+        {{#each products.docs}}
+        <div class="col-sm-3 mb-2 mb-sm-0 m-5 p-1">
+        <div class="card p-2" >
+            <div class="card-body">
+            <li>Title: {{this.title}}</li>
+            <li>Description: {{this.description}}</li>
+            <li>Category: {{this.category}}</li>
+            <li>Price: ${{this.price}}</li>
+            <li class="idValue pb-4">Id: {{this._id}}</li>
+            <button class="addToCart btn btn-primary p-2" data-id={{this._id}}>Agregar al carrito</button>
+            </div>
+        </div>
+        </div>
+        {{/each}}
+    </ul>
+    <div class="p-4">
+        {{#if products.hasPrevPage}}
+            <a class="btn btn-secondary"
+                href="/api/products?page={{products.prevPage}}&query={{query}}&limit={{products.limit}}&order={{order}}"
+            >Anterior</a>
+        {{/if}}
+        <span>Pagina {{products.page}} de {{products.totalPages}}</span>
+        {{#if products.hasNextPage}}
+            <a class="btn btn-secondary"
+                href="/api/products?page={{products.nextPage}}&query={{query}}&limit={{products.limit}}&order={{order}}"
+            >Siguiente</a>
+        {{/if}}
+    </div>
+    </div>
+    
+</div>
+<script src="/js/products.js"></script>
