@@ -111,22 +111,19 @@ export default class CartManager{
 
     async deleteProdFromCart(cid, pid) {
         try {
-            const cart = await CartModel.findById(cid);
+            let cart = await CartModel.findById(cid);
             const prodIndex = cart.products.findIndex(
-                (prod) => prod.product === pid
+                (prod) => prod.product == pid
             );
-            if (prodIndex !== -1) {
-                cart.products[prodIndex].quantity++;
+            if (cart.products[prodIndex].quantity > 1) {
+                cart.products[prodIndex].quantity--;
             } else {
-                const prodToDelete = { product: pid };
-                cart.products.splice(prodToDelete, 1);
+                cart = await CartModel.findOneAndUpdate({ _id: cid }, { $pull: { products: { product: pid } } }, { 'new': true });
             }
             await cart.save();
             return cart;
         } catch (error) {
-            throw new Error(
-                "It doesn´t exists a cart or product with such ID."
-            );
+            console.log(error)
         }
     }
     
