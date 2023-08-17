@@ -1,8 +1,10 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import productsRouter from "./routes/productsRoutes.js";
-import productsViewsRouter from "./routes/productoViewsRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
+import productsViewsRouter from "./routes/productoViewsRouter.js";
+import userRouter from "./routes/userRoutes.js";
+import sessionsRouter from './routes/sessionsRoutes.js'
 import ProductManager from "./dao/mongo/productManager.js";
 const productManager = new ProductManager("./src/db/productos.json")
 import { Server as SocketServer } from "socket.io";
@@ -10,34 +12,45 @@ import {Server as HTTPServer} from "http";
 import __dirname from "./dirname.js";
 import mongoose from "mongoose";
 import messagesManagerDB from "./dao/mongo/messagesManager.js";
-
+import cookieParser from "cookie-parser"; 
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const app = express();
-
-
 const httpServer = HTTPServer(app)
-
-
 const io =  new SocketServer(httpServer)
 
+app.use(cookieParser());
 app.engine("handlebars",handlebars.engine())
 app.set("views",__dirname + "/views")
 app.set("view engine","handlebars")
-
-app.use('/', productsViewsRouter)
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
 app.use('/api/products', productsRouter);
-// la siguiente ruta, agregandole el id de un cart,  contiene la vista para visualizar un carrito específico
 app.use('/api/carts', cartRouter)
-
-
+app.use(
+  session({
+    secret: "wade0609",
+    resave: true,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: "mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/",
+      dbName: "user",
+      ttl: 3600,
+    }),
+  })
+);
 
 const messageManager = new messagesManagerDB();
+const conn= mongoose.connect("mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/")
 
-const conn = mongoose.connect("mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/")
+//rutas nuevas
+app.use('/',userRouter);
+app.use('/products', productsViewsRouter);
+app.use('/api/sessions', sessionsRouter); 
+
 
 app.use((req,res,next)=>{
   req.io=io;
@@ -81,7 +94,6 @@ io.on('connection', async (socket) => {
   })
 
 })
-
 
 
 httpServer.listen(8080,()=>console.log("connectados en 8080"));

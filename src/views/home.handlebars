@@ -1,5 +1,8 @@
 <div class="container p-3">
-    <h1>Lista de productos </h1>
+    <div>
+        <h1>Bienvenido/a, {{userInfo.first_name}}! </h1>
+    </div>
+    <h2>Lista de productos </h2>
                 <table class="table table-light table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -15,6 +18,9 @@
                 <tbody id="listaProductos">
                 </tbody>
             </table>
+            <form action="/logout" method="GET">
+                <button type="submit" class="btn btn-primary">Logout</button>
+            </form>
         <script src='/socket.io/socket.io.js'></script>
     <script src='/js/realtimeproducts.js'></script>
 </div>

@@ -1,0 +1,16 @@
+<div class=" col-6 p-2 m-2">
+    <h1>Inicio de Sesión</h1>
+        <form method="POST" id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo electrónico:</label>
+                <input class="form-control" type="email" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+            <input class="form-control" type="password" id="password" name="password" required>
+            </div>
+            <button class="btn btn-primary m-2" type="submit">Iniciar Sesión</button>
+        </form>
+    <button class="btn btn-primary m-2" onclick="location.href='/register'">Registrarse</button>
+</div>
+<script src="/js/login.js"></script>

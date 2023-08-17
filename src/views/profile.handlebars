@@ -1,0 +1,13 @@
+
+
+<div class="card mb-3 p-2 m-2" style="width: 20rem;">
+  <div class="card-body">
+    <h5 class="card-title"><b>Nombre: </b>{{ this.first_name }}</h5>
+    <p class="card-text"><b>Apellido:</b> {{ this.last_name }}</p>
+    <p class="card-text"> <b>Mail: </b>{{ this.email }}</p>
+    <p class="card-text"><b> Edad: </b> {{ this.age }}</p>
+    <form action="/logout" method="GET">
+            <button class="btn btn-primary" type="submit">Logout</button>
+        </form>
+  </div>
+</div>
