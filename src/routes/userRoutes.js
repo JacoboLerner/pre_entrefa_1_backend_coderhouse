@@ -34,7 +34,6 @@ userRouter.get('/profile', isAuthenticated, (req, res) => {
         email: req.session.user.email,
         age: req.session.user.age,
     };
-    console.log(userInfo);
     res.render('profile', userInfo);
 });
 

@@ -2,81 +2,51 @@ import { Router } from "express";
 import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
 import User from '../dao/models/user.schema.js';
 import { hasAdminCredentials } from "../utils/secure.middleware.js";
+import passport from "passport";
 
 const router = Router();
-
-router.post('/register', async (req, res) => {
-    try {
-        const { first_name, last_name, email, age, password } = req.body;
-
-        // Verificar si el usuario ya existe en la base de datos
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'El correo electrónico ya está en uso.' });
-        }
-        // Verificar si las credenciales son de administrador
-        const isAdminCredentials = hasAdminCredentials(email, password);
-        // Encriptar la contraseña utilizando bcryptjs
-        const saltRounds = 10; // Número de rondas de encriptación 
-        const hashedPassword = bcrypt.hashSync(password, saltRounds);
-        // Crear un nuevo usuario con la contraseña encriptada y el rol correspondiente
-        const newUser = new User({
-            first_name,
-            last_name,
-            email,
-            age,
-            password: hashedPassword,
-            role: isAdminCredentials ? 'admin' : 'usuario'
-        });
-        await newUser.save();
-
-        const user = {
-            _id: newUser._id,
-            first_name: newUser.first_name,
-            last_name: newUser.last_name,
-            email: newUser.email,
-            age: newUser.age,
-            role: newUser.role
-        }
-        // Almacenar toda la información del usuario en la sesión
-        req.session.user = user;
-
-        return res.status(201).json({ message: 'Usuario registrado exitosamente.' });
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({ message: 'Error en el servidor.' });
+//Uso de passport
+router.post("/register", passport.authenticate("register",{failureRedirect:"/failregister"}), async(req,res)=>{
+    req.session.user = {
+        _id: req.user._id,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        age: req.user.age,
+        role: req.user.role
     }
+    res.send({status:"success", message:"usuario registrado",payload:req.session.user})
+})
+
+router.get("/failregister", async (req,res)=>{
+    console.log("failed strategy");
+    res.send({error:"failed"})
+})
+
+router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res) => {
+
+    if(!req.user)return res.status(400).json({ message: 'Credenciales inválidas.' });
+    req.session.user = {
+            _id: req.user._id,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email: req.user.email,
+            age: req.user.age,
+            role: req.user.role
+        }
+        res.send({status: "success",payload: req.user})
 });
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        // Verificar si el usuario existe en la base de datos
-        const user = await User.findOne({email});
-        if (!user) {
-            return res.status(401).json({ message: 'Credenciales inválidas.' });
-        }
-        // Verificar la contraseña utilizando bcryptjs
-        const passwordsMatch = bcrypt.compareSync(password, user.password);
-        if (!passwordsMatch) {
-            return res.status(401).json({ message: 'Credenciales inválidas.' });
-        }
+router.get ("/faillogin", (req,res)=>{
+    res.send({error: "Login fallado"})
+})
+//Uso de github
+router.get("/github", passport.authenticate("github", { scope: ["user:email"] }),(req, res) => {} );
 
-        const userSession = {
-            _id: user._id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            age: user.age,
-            role: user.role
-        }
-        // Almacenar toda la información del usuario en la sesión
-        req.session.user = userSession;
-        return res.status(200).json({ message: 'Inicio de sesión exitoso.' });
-    } catch (error) {
-        console.log(error.message);
-        return res.status(500).json({ message: 'Error en el servidor.' });
-    }
+router.get("/githubcallback",passport.authenticate("github", {failureRedirect: "/login"}),(req, res) => {
+    req.session.user=req.user;
+    console.log(req.session.user)
+    res.redirect("/")
 });
 
 export default router;

@@ -15,6 +15,8 @@ import messagesManagerDB from "./dao/mongo/messagesManager.js";
 import cookieParser from "cookie-parser"; 
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 const httpServer = HTTPServer(app)
@@ -42,11 +44,14 @@ app.use(
     }),
   })
 );
+//Passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 const messageManager = new messagesManagerDB();
 const conn= mongoose.connect("mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/")
 
-//rutas nuevas
 app.use('/',userRouter);
 app.use('/products', productsViewsRouter);
 app.use('/api/sessions', sessionsRouter); 
