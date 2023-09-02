@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         console.error("Error en la solicitud:", error);
+        alert("datos incorrectos")
       }
     });
   });
