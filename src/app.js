@@ -17,6 +17,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import  config  from "../env.js";
 
 const app = express();
 const httpServer = HTTPServer(app)
@@ -38,7 +39,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
-      mongoUrl: "mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/",
+      mongoUrl: config.mongoUrl,
       dbName: "user",
       ttl: 3600,
     }),
@@ -50,7 +51,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const messageManager = new messagesManagerDB();
-const conn= mongoose.connect("mongodb+srv://jlernerrojas:0VxljIZsJgdtPPOu@codercluster.ybyhge3.mongodb.net/")
+const conn= mongoose.connect(config.mongoUrl)
 
 app.use('/',userRouter);
 app.use('/products', productsViewsRouter);
@@ -101,4 +102,4 @@ io.on('connection', async (socket) => {
 })
 
 
-httpServer.listen(8080,()=>console.log("connectados en 8080"));
+httpServer.listen(config.port,()=>console.log("connectados en 8080"));

@@ -4,6 +4,8 @@ import User from "../dao/models/user.schema.js";
 import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
 import { hasAdminCredentials } from "../utils/secure.middleware.js";
 import GitHubStrategy from "passport-github2";
+import config from "../../env.js"
+
 
 
 const LocalStrategy= local.Strategy;
@@ -28,7 +30,7 @@ const initializePassport =()=>{
                     password: hashedPassword,
                     age: " ",
                     role:
-                      profile._json.email == "admincoder@coder.com" ? "admin" : "usuario",
+                      profile._json.email == config.adminName ? "admin" : "usuario",
                 })
                 await newUser.save()
                 done(null,newUser)
