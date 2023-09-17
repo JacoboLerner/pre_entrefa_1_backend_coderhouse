@@ -1,6 +1,6 @@
 import passport from "passport";
 import local from "passport-local";
-import User from "../dao/models/user.schema.js";
+import User from "../models/user.schema.js";
 import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
 import { hasAdminCredentials } from "../utils/secure.middleware.js";
 import GitHubStrategy from "passport-github2";

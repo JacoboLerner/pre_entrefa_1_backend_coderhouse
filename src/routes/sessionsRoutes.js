@@ -1,11 +1,7 @@
 import { Router } from "express";
-import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
-import User from '../dao/models/user.schema.js';
-import { hasAdminCredentials } from "../utils/secure.middleware.js";
 import passport from "passport";
 
 const router = Router();
-//Uso de passport
 router.post("/register", passport.authenticate("register",{failureRedirect:"/failregister"}), async(req,res)=>{
     req.session.user = {
         _id: req.user._id,
@@ -40,7 +36,7 @@ router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"
 router.get ("/faillogin", (req,res)=>{
     res.send({error: "Login fallado"})
 })
-//Uso de github
+
 router.get("/github", passport.authenticate("github", { scope: ["user:email"] }),(req, res) => {} );
 
 router.get("/githubcallback",passport.authenticate("github", {failureRedirect: "/login"}),(req, res) => {

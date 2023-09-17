@@ -45,7 +45,7 @@ app.use(
     }),
   })
 );
-//Passport
+
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -87,19 +87,15 @@ io.on('connection', async (socket) => {
   socket.emit('products',await productManager.getProducts())
 
   socket.on('new_prod', async (data) => {
-     await productManager.addProduct(data)
-      
+     await productManager.addProduct(data)    
       socket.emit('products', await productManager.getProducts())     
   })
 
   socket.on('delete_prod',async (data) => {
      await productManager.deleteProductbyId(data.pid)
-
-
       socket.emit('products',await productManager.getProducts())
   })
 
 })
-
 
 httpServer.listen(config.port,()=>console.log("connectados en 8080"));
