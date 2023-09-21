@@ -3,14 +3,7 @@ import passport from "passport";
 
 const router = Router();
 router.post("/register", passport.authenticate("register",{failureRedirect:"/failregister"}), async(req,res)=>{
-    req.session.user = {
-        _id: req.user._id,
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        email: req.user.email,
-        age: req.user.age,
-        role: req.user.role
-    }
+    req.session.user=req.user;
     res.send({status:"success", message:"usuario registrado",payload:req.session.user})
 })
 
@@ -22,15 +15,8 @@ router.get("/failregister", async (req,res)=>{
 router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res) => {
 
     if(!req.user)return res.status(400).json({ message: 'Credenciales inválidas.' });
-    req.session.user = {
-            _id: req.user._id,
-            first_name: req.user.first_name,
-            last_name: req.user.last_name,
-            email: req.user.email,
-            age: req.user.age,
-            role: req.user.role
-        }
-        res.send({status: "success",payload: req.user})
+    req.session.user=req.user;
+    res.send({status: "success",payload: req.user})
 });
 
 router.get ("/faillogin", (req,res)=>{

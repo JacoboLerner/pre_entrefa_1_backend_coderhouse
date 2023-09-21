@@ -5,13 +5,14 @@ const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 };
 
 const isAdmin = (req, res, next) => {
-    if (req.session.user && req.session.user.role === 'admin') {
+    if (req.user && req.user.role === 'admin') {
         next();
+        
     } else {
         res.status(403).json({ message: 'Acceso no autorizado.' });
     }

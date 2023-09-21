@@ -31,7 +31,6 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
-app.use('/api/products', productsRouter);
 app.use('/api/carts', cartRouter)
 app.use(
   session({
@@ -54,6 +53,7 @@ const messageManager = new messagesManagerDB();
 const conn= mongoose.connect(config.mongoUrl)
 
 app.use('/',userRouter);
+app.use('/api/products', productsRouter);
 app.use('/products', productsViewsRouter);
 app.use('/api/sessions', sessionsRouter); 
 

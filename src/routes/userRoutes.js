@@ -20,13 +20,7 @@ userRouter.get('/register', (req, res) => {
 });
 
 userRouter.get('/profile', isAuthenticated, (req, res) => {
-    // Obtener la información del usuario desde la sesión
-    const userInfo = {
-        first_name: req.session.user.first_name,
-        last_name: req.session.user.last_name,
-        email: req.session.user.email,
-        age: req.session.user.age,
-    };
+    const userInfo = req.session.user
     res.render('profile', userInfo);
 });
 
