@@ -73,10 +73,18 @@ io.on('connection', async (socket) => {
   console.log('se conecto un cliente');
   const messages = await messageManager.getMessages();
   socket.emit("messageLogs", messages)
-  
+  socket.on("message", async (data) => {
+    console.log(data)
+    let user = data.user;
+    let message = data.message;
+    await messageManager.addMessage(user, message)
+    const messages = await messageManager.getMessages();
+    socket.broadcast.emit("messageLogs", messages)
+})
   socket.emit('connected', (data) => {
   console.log('connected with server')
   socket.on("message", async (data) => {
+    console.log(data)
     let user = data.user;
     let message = data.message;
     await messageManager.addMessage(user, message)

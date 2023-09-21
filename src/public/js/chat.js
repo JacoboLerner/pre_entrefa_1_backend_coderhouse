@@ -32,16 +32,23 @@ function createOwnMessage(msg) {
         </div>`;
     }
 
-const socket = io("http://localhost:8080",{autoConnect:false});
+function scrollToBottom() {
+        messages.scrollTop = messages.scrollHeight;
+    }   
+      
+const socket = io("http://localhost:8080");
 socket.on("messageLogs", (msgs) => {
+
     console.log(msgs);
     const user= localStorage.getItem("username")
 
     const msgHtml = msgs.map((msg) => msg.user == user ? createOwnMessage(msg.message): createMessage(msg));
     $("#messages").html(msgHtml.join(" "));
+    scrollToBottom()
 });
 
-function onLoad(){
+function onLoad (){
+
     const username= localStorage.getItem("username")
     if(username){
         socket.auth = {username}
@@ -51,7 +58,7 @@ function onLoad(){
     }
 }
 
-$(function () {
+$( function () {
     onLoad()
     $("#sendMsg").on("click", function () {
     const input = $("#message").val();
@@ -60,25 +67,29 @@ $(function () {
     socket.emit("message", {user: user, message: input});
 
     $("#messages").append(createOwnMessage(input));
+    scrollToBottom()
     });
     
     $("#joinBtn").on("click",()=>{
         const input= $("#username"). val()
         localStorage.setItem("username", input)
-        console.log({input})
+        console.log(input)
         socket.auth= {username:input}
         socket.connect()
         $("#chat").removeClass("hidden")
         $("#joinChat").addClass("hidden")
     })
+
     $("#message").on("keyup", function (event) {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
         const input = $("#message").val();
         $("#message").val("");
         const user= localStorage.getItem("username")
         socket.emit("message", {user: user, message: input});
-
-        $("#messages").append(createOwnMessage(input));
+        console.log(input,user)
+        $("#messages").append(createOwnMessage(input))
+        scrollToBottom()
+        
     }
     });
 });
