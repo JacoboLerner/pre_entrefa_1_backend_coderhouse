@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import UserDTO from "../dto/User.js";
 
 const router = Router();
 router.post("/register", passport.authenticate("register",{failureRedirect:"/failregister"}), async(req,res)=>{
@@ -12,11 +13,16 @@ router.get("/failregister", async (req,res)=>{
     res.send({error:"failed"})
 })
 
-router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res) => {
 
+router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res,) => {
+    //uso de DTO
     if(!req.user)return res.status(400).json({ message: 'Credenciales inválidas.' });
-    req.session.user=req.user;
-    res.send({status: "success",payload: req.user})
+    req.session.user=req.user
+    const result = new UserDTO(req.user);
+    res.send({status: "success",payload: result})
+
+    
+
 });
 
 router.get ("/faillogin", (req,res)=>{

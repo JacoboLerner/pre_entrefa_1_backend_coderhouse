@@ -8,6 +8,8 @@ productsViewsRouter.get("/", isAuthenticated,ProductsViewsController.GetAllProdu
 
 productsViewsRouter.get("/realtimeproducts",isAdmin, ProductsViewsController.GetAllRealTimeProducts)
 
+productsViewsRouter.get('/carts/:cid', ProductsViewsController.readViewsCartController)
+
 
 export default productsViewsRouter;
 

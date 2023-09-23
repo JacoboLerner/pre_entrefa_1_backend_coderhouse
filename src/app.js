@@ -18,6 +18,8 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import  config  from "../env.js";
+import purchaserouter from "./routes/mailPurchaseRoutes.js";
+import { userAdminControl } from "./utils/secure.middleware.js";
 
 const app = express();
 const httpServer = HTTPServer(app)
@@ -31,7 +33,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
-app.use('/api/carts', cartRouter)
+
 app.use(
   session({
     secret: "wade0609",
@@ -53,10 +55,14 @@ const messageManager = new messagesManagerDB();
 const conn= mongoose.connect(config.mongoUrl)
 
 app.use('/',userRouter);
+app.use('/api/carts', cartRouter)
 app.use('/api/products', productsRouter);
 app.use('/products', productsViewsRouter);
 app.use('/api/sessions', sessionsRouter); 
-
+app.use('/sendMailPurchase', purchaserouter); 
+app.get("/chat",userAdminControl, (req,res)=>{
+  res.render("chat")
+})
 
 app.use((req,res,next)=>{
   req.io=io;
@@ -66,9 +72,7 @@ app.use((req,res,next)=>{
 app.get("/crearNotificacion", (req,res)=>{
   res.render("join")
 })
-app.get("/chat", (req,res)=>{
-  res.render("chat")
-})
+
 io.on('connection', async (socket) => {
   console.log('se conecto un cliente');
   const messages = await messageManager.getMessages();
@@ -80,17 +84,6 @@ io.on('connection', async (socket) => {
     await messageManager.addMessage(user, message)
     const messages = await messageManager.getMessages();
     socket.broadcast.emit("messageLogs", messages)
-})
-  socket.emit('connected', (data) => {
-  console.log('connected with server')
-  socket.on("message", async (data) => {
-    console.log(data)
-    let user = data.user;
-    let message = data.message;
-    await messageManager.addMessage(user, message)
-    const messages = await messageManager.getMessages();
-    socket.broadcast.emit("messageLogs", messages)
-})
 })
   socket.emit('products',await productManager.getProducts())
 

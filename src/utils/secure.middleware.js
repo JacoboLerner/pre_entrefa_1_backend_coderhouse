@@ -1,5 +1,4 @@
 import config from "../../env.js"
-console.log(config)
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
@@ -25,4 +24,12 @@ const hasAdminCredentials = (email, password) => {
     }
 };
 
-export { isAuthenticated, isAdmin, hasAdminCredentials };
+const userAdminControl = (req,res,next)=>{
+    if(req.session.user.email != config.adminName){
+        next()
+    }else{
+        res.status(403).json({ message: 'Acceso no autorizado.' });
+    }
+    } 
+
+export { isAuthenticated, isAdmin, hasAdminCredentials,userAdminControl };

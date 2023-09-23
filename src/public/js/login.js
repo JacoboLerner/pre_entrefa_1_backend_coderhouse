@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           // Redireccionar al perfil del usuario en caso de inicio de sesión exitoso
           window.location.href = "/products";
+
         } else {
           // Mostrar mensaje de error en caso de credenciales inválidas
           alert(data.message);

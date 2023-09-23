@@ -1,5 +1,6 @@
 import CartModel from "../../models/cart.schema.js";
 import ProductModel from "../../models/product.schema.js";
+import User from "../../models/user.schema.js";
 
 export default class CartManager{
     async getCarts(){
@@ -22,7 +23,8 @@ export default class CartManager{
             const cartFound = await CartModel
                 .findById(id)
                 .populate("products.product")
-                .lean();
+                .lean()
+                .exec();
             if (cartFound) {
                 return cartFound;
             } else {
@@ -44,8 +46,9 @@ export default class CartManager{
         } 
     }
 
-    async addProductToCart(cartId, productId){
+    async addProductToCart(cartId, productId,user){
         try {
+            console.log(cartId, productId)
             const producto= await ProductModel.findById(productId)
             const cart = await CartModel.findById(cartId);
             if (!cart) {
@@ -55,7 +58,7 @@ export default class CartManager{
                 return { status: 404, response: "Producto no encontrado." } 
                 
             }
-
+            
             const prodIndex = cart.products.findIndex(
                 (prod) => prod.product == productId
             );
@@ -66,6 +69,7 @@ export default class CartManager{
                 const newProduct = { product: productId, quantity: 1 };
                 cart.products.push(newProduct);
             }
+            await CartModel.findByIdAndUpdate(cartId, { products: cart.products }).exec();
 
             await cart.save();
             console.log(`se agrego ${productId} al carrito ${cartId}`)

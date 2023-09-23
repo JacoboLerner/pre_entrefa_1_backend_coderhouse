@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const cartRouter = new Router();
 import * as CartController from "../controllers/CartController.js"
+import { userAdminControl } from '../utils/secure.middleware.js';
 
 cartRouter.get('/', CartController.GetAllCarts)
 
@@ -15,8 +16,10 @@ cartRouter.delete("/:cid", CartController.DeleteCartById);
 cartRouter.put("/:cid", CartController.ModifyProductInCart);
 
 cartRouter.put("/:cid/product/:pid", CartController.UpdateQuantity);
+//restriccion solo usuario puede agregar productos
+cartRouter.post('/:cid/product/:pid',userAdminControl, CartController.AddProductToCart)
 
-cartRouter.post('/:cid/product/:pid', CartController.AddProductToCart)
+cartRouter.get('/:cid/purchase', CartController.purchaseCart);
 
 
 

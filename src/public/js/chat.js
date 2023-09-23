@@ -41,7 +41,6 @@ socket.on("messageLogs", (msgs) => {
 
     console.log(msgs);
     const user= localStorage.getItem("username")
-
     const msgHtml = msgs.map((msg) => msg.user == user ? createOwnMessage(msg.message): createMessage(msg));
     $("#messages").html(msgHtml.join(" "));
     scrollToBottom()

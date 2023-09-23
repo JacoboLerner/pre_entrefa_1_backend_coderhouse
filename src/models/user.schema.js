@@ -22,17 +22,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    //cambios solicitado en entrega no activo aun
     cart: {
-        type: [
-            {
-                cart: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "carts",
-                }
-            },
-        ],
-        default: []
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "carts",
     },
     role: {
         type: String,

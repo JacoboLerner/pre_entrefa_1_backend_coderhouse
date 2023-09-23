@@ -1,17 +1,29 @@
 <div>
-    <h1 class="m-2 p-2"> Carrito {{id}}</h1>
-    <div class="row"> 
-            {{#each products}}
-            <div class="col-sm-3 mb-2 mb-sm-0 m-5 p-1">
-                <div class="card p-2" >
-                    <div class="card-body">
-                        <li>Producto: {{this.product.title}}</li>
-                        <li>Precio: ${{this.product.price}}</li>
-                        <li>Categoria: {{this.product.category}}</li>
-                        <li>Cantidad: {{this.quantity}}</li>
-                    </div>
-                </div>
-            </div>              
-        {{/each}}
-    </div>
+    <h1 class="m-2 p-2"> Carrito {{cid}}</h1>
 </div>
+<div>
+    <ul>
+        <h2>Productos agregados al carrito</h2>
+        </br>
+        {{#each products}}
+        <li class=" p-1 m-1 ">
+            {{this.product}} - {{this.quantity}}
+        </li>
+        {{/each}}
+    </ul>
+</div>
+
+{{#if products.length}}
+    <button id="purchaseBtn" class="btn btn-info m-2 mb-3" data-cart-id="{{cid}}">Finalizar Compra</button> <!-- Agregar atributo de datos -->
+{{/if}}
+
+<div id="purchaseResults" class="ticket"  style="display: none;" class="m-3 p-3">
+    <h2 class="m-2">Productos Comprados</h2>
+    <ul id="purchasedProducts" ></ul>
+    <h2 class="m-2">Productos No Comprados</h2>
+    <ul id="notPurchasedProducts" ></ul>
+    <h2 class="m-2">Precio Total</h2>
+    <ul id="total" ></ul>
+</div>
+
+<script type="module" src="/js/cartPurchase.js"></script>
