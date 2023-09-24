@@ -16,12 +16,13 @@ function createMessage(msg) {
         </div>
         </div>`;
 }
-function createOwnMessage(msg) {
+function createOwnMessage(msg,user) {
         return `<div class="chat-message">
         <div class="flex items-end justify-end">
             <div
             class="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end"
             >
+            <span class="brand-color">${user}</span>
             <div>
                 <span
                 class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white"
@@ -41,13 +42,13 @@ socket.on("messageLogs", (msgs) => {
 
     console.log(msgs);
     const user= localStorage.getItem("username")
-    const msgHtml = msgs.map((msg) => msg.user == user ? createOwnMessage(msg.message): createMessage(msg));
+    const msgHtml = msgs.map((msg) => msg.user == user ? createOwnMessage(msg.message,user): createMessage(msg));
     $("#messages").html(msgHtml.join(" "));
     scrollToBottom()
 });
 
 function onLoad (){
-
+    
     const username= localStorage.getItem("username")
     if(username){
         socket.auth = {username}
@@ -55,6 +56,7 @@ function onLoad (){
         $("#chat").removeClass("hidden")
         $("#joinChat").addClass("hidden")
     }
+    scrollToBottom()
 }
 
 $( function () {
@@ -86,7 +88,7 @@ $( function () {
         const user= localStorage.getItem("username")
         socket.emit("message", {user: user, message: input});
         console.log(input,user)
-        $("#messages").append(createOwnMessage(input))
+        $("#messages").append(createOwnMessage(input,user))
         scrollToBottom()
         
     }

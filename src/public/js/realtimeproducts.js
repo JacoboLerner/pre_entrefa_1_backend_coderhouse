@@ -3,6 +3,15 @@ const socket = io();
 const addProductForm = document.getElementById('addProduct');
 const deleteProductForm = document.getElementById('deleteProduct');
 
+$( function () {
+    $("#toTheChat").on("click",()=>{
+        const input= document.querySelector(".titulo").textContent;
+        localStorage.setItem("username", input)
+        console.log(input)
+
+    })
+
+});
 
 socket.on("connected", (data) => {
     console.log('connected with server')

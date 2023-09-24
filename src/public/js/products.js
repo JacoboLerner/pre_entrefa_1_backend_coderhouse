@@ -1,9 +1,13 @@
+
+
 const addEvents = () => {
     const addToCartButtons = document.querySelectorAll(".addToCart");
     addToCartButtons.forEach((button) => {
         button.addEventListener("click", addToCart);
     });
 };
+
+
 const addToCart = async (e) => {
     const productID = e.target.dataset.id;
     let cartID = localStorage.getItem("cartId");
@@ -31,6 +35,24 @@ const addToCart = async (e) => {
     });
     const result = await response.json();
     console.log(result);
+    if (response.ok) {        
+        alert("Se ha agregado producto de forma exitosa");
+      } else {
+        alert(result.message);
+      }
 };
 
+$( function () {
+    $(".carrrito").on("click",()=>{
+        let cartID = localStorage.getItem("cartId")
+        window.location.href = `/`,
+        window.location.href = `/products/carts/${cartID}`
+        
+        
+    })
+
+});
+
 window.addEventListener("load", addEvents);
+
+
