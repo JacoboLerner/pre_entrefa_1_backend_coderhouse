@@ -1,5 +1,5 @@
 import ProductModel from "../../models/product.schema.js";
-import mongoose from "mongoose";
+
 
 export default class ProductManager {
     #id = 1;

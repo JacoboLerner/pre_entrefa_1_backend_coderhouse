@@ -5,7 +5,9 @@ import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
 import { hasAdminCredentials } from "../utils/secure.middleware.js";
 import GitHubStrategy from "passport-github2";
 import config from "../../env.js"
-
+import EErrors from "../error/invalid.js";
+import { generateProductErrorInfo } from "../error/userError.js";
+import CustomError from "../error/customError.js"
 
 
 const LocalStrategy= local.Strategy;
@@ -42,8 +44,17 @@ const initializePassport =()=>{
         }
     }))
     passport.use("register", new LocalStrategy(
+        //manejo de error usando customizador
         {passReqToCallback:true, usernameField:"email"}, async (req, username,password, done)=>{
             const { first_name, last_name, email, age } = req.body;
+            if (!first_name || !last_name || !age || !email){
+                CustomError.createError({
+                  name: "Product creation Error",
+                  cause:generateProductErrorInfo( {first_name, last_name, email, age}),
+                  message: "Error typing to create a product",
+                  code: EErrors.INVALID_TYPES_ERROR
+                });
+              }
             try{
                 const existingUser = await User.findOne({ email:username });
                 if(existingUser){

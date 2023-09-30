@@ -21,8 +21,6 @@ socket.on("products", async (data) => {
     let lista = document.getElementById("listaProductos");
     let productos = ''
 
-    console.log(data)
-
     data.forEach((producto) => {
         productos = productos + `<tr>
         <td> ${producto._id}            </td>

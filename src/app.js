@@ -20,6 +20,8 @@ import initializePassport from "./config/passport.config.js";
 import  config  from "../env.js";
 import purchaserouter from "./routes/mailPurchaseRoutes.js";
 import { userAdminControl } from "./utils/secure.middleware.js";
+import mockingRouter from "./routes/mocking.js"
+import ErrorHandler from "./utils/errorMiddleware.js"
 
 const app = express();
 const httpServer = HTTPServer(app)
@@ -60,6 +62,8 @@ app.use('/api/products', productsRouter);
 app.use('/products', productsViewsRouter);
 app.use('/api/sessions', sessionsRouter); 
 app.use('/sendMailPurchase', purchaserouter); 
+app.use('/mockingproducts', mockingRouter);
+
 app.get("/chat",userAdminControl, (req,res)=>{
   res.render("chat")
 })
@@ -99,4 +103,5 @@ io.on('connection', async (socket) => {
 
 })
 
+app.use(ErrorHandler);
 httpServer.listen(config.port,()=>console.log("connectados en 8080"));
