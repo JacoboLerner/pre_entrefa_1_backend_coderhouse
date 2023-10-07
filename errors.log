@@ -3,13 +3,5 @@
 [31mFATAL[39m: Esto es un mensaje de fatal
 [37mERROR[39m: Esto es un mensaje de error
 [31mFATAL[39m: Esto es un mensaje de fatal
-[37mERROR[39m: {
-  _id: new ObjectId("650ef3cdb20aef8cbb009233"),
-  first_name: 'Jacobo Tomas',
-  last_name: 'Lerner Rojas',
-  email: 'jacoboheat@gmail.com',
-  age: 29,
-  password: '$2a$10$CmCDb9qvfzryJ123uLg5ReD0gigOPLSj8X/dFzu98vcBpqabo9fla',
-  role: 'usuario',
-  __v: 0
-}
+[37mERROR[39m: Esto es un mensaje de error
+[31mFATAL[39m: Esto es un mensaje de fatal
