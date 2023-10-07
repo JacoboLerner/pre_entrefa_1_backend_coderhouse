@@ -1,3 +1,4 @@
+import logger from "../../config/loggers/factory.js";
 import CartModel from "../../models/cart.schema.js";
 import ProductModel from "../../models/product.schema.js";
 import User from "../../models/user.schema.js";
@@ -10,11 +11,11 @@ export default class CartManager{
             if(!cartModel.length) return { status: 404, response: "Carts not found."}
 
             const carts = cartModel.map(cart => ({ id: cart._id, products: cart.products }))
-            console.log(carts)
+            logger.INFO(carts)
             this.carts = carts;
             return this.carts;
         }catch(error){
-            console.log(`error: ${error}`)
+            logger.ERROR(`error: ${error}`)
         }
     }
 
@@ -42,13 +43,13 @@ export default class CartManager{
         
             return newCart;
         }catch(error){
-            console.log(`error: ${error}`)
+            logger.ERROR(`error: ${error}`)
         } 
     }
 
     async addProductToCart(cartId, productId,user){
         try {
-            console.log(cartId, productId)
+            logger.INFO(cartId, productId)
             const producto= await ProductModel.findById(productId)
             const cart = await CartModel.findById(cartId);
             if (!cart) {
@@ -62,7 +63,6 @@ export default class CartManager{
             const prodIndex = cart.products.findIndex(
                 (prod) => prod.product == productId
             );
-            console.log(prodIndex)
             if (prodIndex !== -1) {
                 cart.products[prodIndex].quantity++;
             } else {
@@ -72,7 +72,7 @@ export default class CartManager{
             await CartModel.findByIdAndUpdate(cartId, { products: cart.products }).exec();
 
             await cart.save();
-            console.log(`se agrego ${productId} al carrito ${cartId}`)
+            logger.INFO(`se agrego ${productId} al carrito ${cartId}`)
             return true;
         } catch (error) {
             throw new Error("No se logro agregar al carrito " + error);
@@ -85,10 +85,10 @@ export default class CartManager{
                 { _id: cid },
                 { products: prod }
             );
-            console.log("Carrito actualizado", updatedCart);
+           logger.INFO("Carrito actualizado", updatedCart);
             return updatedCart;
         } catch (error) {
-            console.log(error);
+            logger.ERROR(error);
         }
     }
 
@@ -97,10 +97,9 @@ export default class CartManager{
             const currentCart = await CartModel.findById(cid);
             console.log(pid)
             const indexProduct = currentCart.products.findIndex((item) => item.product._id == pid);
-            console.log(indexProduct)
             if (indexProduct !== -1) {
               currentCart.products[indexProduct].quantity = quantity;
-              console.log(`Cantidad actualizada exitosamente`)
+              logger.INFO(`Cantidad actualizada exitosamente`)
               
             } else {
               return 'Product not found on cart'
@@ -109,7 +108,7 @@ export default class CartManager{
             return currentCart;
             
           } catch (error) {
-            console.error(`Error trying to update product quantity: ${error}`);
+            logger.ERROR(`Error trying to update product quantity: ${error}`);
           }
         };
 
@@ -127,7 +126,7 @@ export default class CartManager{
             await cart.save();
             return cart;
         } catch (error) {
-            console.log(error)
+            logger.ERROR(error)
         }
     }
     
@@ -138,7 +137,7 @@ export default class CartManager{
             await cart.save();
             return cart;
         } catch (err) {
-            console.error(err);
+            logger.ERROR(err);
             // console.log("no se pudo vaciar");
         }
     }
@@ -153,7 +152,7 @@ export default class CartManager{
 
             return { status: 200, response: "Carito borrado." }
         }catch(error){
-            console.log(`error: ${error}`)
+            logger.ERROR(`error: ${error}`)
         }
     }
 }

@@ -23,7 +23,8 @@ import { userAdminControl } from "./utils/secure.middleware.js";
 import mockingRouter from "./routes/mocking.js"
 import ErrorHandler from "./utils/errorMiddleware.js"
 import winston from "./utils/winston.js"
-import errorHandler from "./utils/errorHandler.js";
+import confiig from "./config/loggers/factory.js"
+import loggerRouter from "./routes/loggerRoutes.js"
 
 const app = express();
 const httpServer = HTTPServer(app)
@@ -40,13 +41,8 @@ app.use(express.json());
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
 
-app.get("/api/test", (req,res)=>{
-  return res.status(200).json({
-    message:"logger HTTP",
-    response:true
-  })
-})
-app.use(winston)
+
+
 
 app.use(
   session({
@@ -65,6 +61,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(winston)
 const messageManager = new messagesManagerDB();
 const conn= mongoose.connect(config.mongoUrl)
 
@@ -75,6 +72,8 @@ app.use('/products', productsViewsRouter);
 app.use('/api/sessions', sessionsRouter); 
 app.use('/sendMailPurchase', purchaserouter); 
 app.use('/mockingproducts', mockingRouter);
+//nuevo desafio de loggers
+app.use('/api/loggers', loggerRouter)
 
 app.get("/chat",userAdminControl, (req,res)=>{
   res.render("chat")
@@ -90,11 +89,11 @@ app.get("/crearNotificacion", (req,res)=>{
 })
 
 io.on('connection', async (socket) => {
-  console.log('se conecto un cliente');
+  //se cva integrando en distintos lugares
+  confiig.INFO('se conecto un cliente');
   const messages = await messageManager.getMessages();
   socket.emit("messageLogs", messages)
   socket.on("message", async (data) => {
-    console.log(data)
     let user = data.user;
     let message = data.message;
     await messageManager.addMessage(user, message)
@@ -115,7 +114,6 @@ io.on('connection', async (socket) => {
 
 })
 
-app.use(errorHandler)
 app.use(ErrorHandler);
 
-httpServer.listen(config.port,()=>console.log("connectados en 8080"));
+httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));

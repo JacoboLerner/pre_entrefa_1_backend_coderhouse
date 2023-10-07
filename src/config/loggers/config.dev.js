@@ -3,17 +3,21 @@ import { createLogger, format, transports, addColors} from "winston"
 const {simple,colorize}= format
 
 const levels = {
-    FATAL:1,
+    FATAL:0,
+    ERROR:1,
     WARN:2,
     INFO:3,
-    HTTP:4
+    HTTP:4,
+    DEBUG:5
 }
 
 const colors = {
+    ERROR:"white",
     FATAL: "red",
     WARN: "yellow",
-    INFO: "white",
-    HTTP: "blue"
+    INFO: "green",
+    HTTP: "blue",
+    DEBUG: "cyan"
 }
 addColors(colors)
 
@@ -22,13 +26,8 @@ export default createLogger({
     format:colorize(),
     transports: [
         new transports.Console({
-                level: "HTTP", // info, fatal, warn
+                level: "DEBUG", // info, fatal, warn
                 format: simple()
-            }),
-        new transports.File({
-            level: "FATAL",
-            format:simple(),
-            filename: "./errors.log"
-        })
+            })
     ]
 })

@@ -1,3 +1,4 @@
+import logger from "../../config/loggers/factory.js";
 import ProductModel from "../../models/product.schema.js";
 
 
@@ -16,18 +17,18 @@ export default class ProductManager {
             return this.products;
 
         }catch(e){
-            console.log(e)
+            logger.ERROR(e)
         }       
     }
 
     addProduct= async (product)=> { 
         try{
             const producto = await ProductModel.insertMany([product])
-            console.log(producto)  
+            logger.INFO(producto)  
             return producto
         }
         catch{(e)=>{
-            console.log("Hubo un error en el ingreso de datos")
+            logger.ERROR("Hubo un error en el ingreso de datos")
         } }
 
         }
@@ -39,7 +40,7 @@ export default class ProductManager {
     
                 return { status: 200, response: product }
             }catch(error){
-                console.log(`error: ${error}`)
+                logger.error(`error: ${error}`)
             }
         }
         
@@ -59,7 +60,7 @@ export default class ProductManager {
 
 
             }catch(error){
-                console.log(`error: ${error}`)
+                logger.ERROR(`error: ${error}`)
             }
 
         }
@@ -72,6 +73,6 @@ export default class ProductManager {
                 return this.products;
     
             }catch(e){
-                console.log(e)
+                logger.ERROR(e)
             }      
 }}

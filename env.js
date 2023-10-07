@@ -1,6 +1,13 @@
 import dotenv from "dotenv";
-
-dotenv.config();
+import { Command } from "commander";
+const program = new Command()
+//manejo de version
+program.option('--mode <mode>','mode of execution','development')
+program.parse()
+const options = program.opts()
+dotenv.config({
+    path: options.mode=='production' ? './.env.production' :'./.env.development',
+});
 
 export default {
     port: process.env.PORT,

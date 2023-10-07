@@ -37,7 +37,7 @@ function scrollToBottom() {
         messages.scrollTop = messages.scrollHeight;
     }   
       
-const socket = io("http://localhost:8080");
+const socket = io.connect();
 socket.on("messageLogs", (msgs) => {
 
     console.log(msgs);

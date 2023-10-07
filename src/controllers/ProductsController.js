@@ -1,3 +1,4 @@
+import logger from "../config/loggers/factory.js";
 import * as ProductServices from "../services/ProductsServices.js"
 
 export const GetAllProducts = async (req, res) => {
@@ -34,7 +35,7 @@ export const GetAllProducts = async (req, res) => {
         res.render("products", { products, query, order });
     }catch(e){
         res.status(502).send({ error: "true,hubo un error" })
-        console.log(e);
+        logger.ERROR(e);
     }
 
     }
@@ -45,7 +46,7 @@ export const GetAllProducts = async (req, res) => {
             const product =await ProductServices.GetOneProductById(pid)
             res.send(product);
         } catch (e){
-            console.log(e)
+            logger.ERROR(e)
         }
         }
 

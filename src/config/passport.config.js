@@ -8,7 +8,7 @@ import config from "../../env.js"
 import EErrors from "../error/invalid.js";
 import { generateProductErrorInfo } from "../error/userError.js";
 import CustomError from "../error/customError.js"
-
+import logger from "../config/loggers/factory.js"
 
 const LocalStrategy= local.Strategy;
 
@@ -58,7 +58,7 @@ const initializePassport =()=>{
             try{
                 const existingUser = await User.findOne({ email:username });
                 if(existingUser){
-                    console.log("User ya existe")
+                    logger.INFO("User ya existe")
                     return done(null,false)
                 }
                 const isAdminCredentials = hasAdminCredentials(email, password);
@@ -76,7 +76,7 @@ const initializePassport =()=>{
                 await newUser.save();
                 // Almacenar toda la información del usuario en la sesión
 
-                console.log(newUser)
+                logger.INFO(newUser)
                 return done(null, newUser)
             }catch(error){
                 return done ("error al obtener usuario" + error)
@@ -88,12 +88,12 @@ const initializePassport =()=>{
         try{
             const user= await User.findOne({email: username})
             if(!user){
-                console.log("no existe usuario")
+                logger.INFO("no existe usuario")
                 return done (null,false);
             }
             const passwordsMatch = bcrypt.compareSync(password, user.password);
             if(!passwordsMatch) return done (null,false);
-            console.log(user)
+            logger.INFO(user)
             return done(null,user);
         }catch(error){
             return done(error);

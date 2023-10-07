@@ -3,6 +3,7 @@ import ProductModel from "../models/product.schema.js";
 import Ticket from "../models/ticket.schema.js";
 import User from "../models/user.schema.js";
 import * as CartServices from "../services/CartServices.js"
+import logger from "../config/loggers/factory.js";
 
 export const GetAllCarts = async (req, res) => {
     try{
@@ -40,7 +41,7 @@ export const GetCarttById = async (req, res) => {
         });
         res.status(200).json(productsWithInfo);
     } catch (error) {
-        console.log('Error al obtener los productos del carrito:', error);
+        logger.ERROR('Error al obtener los productos del carrito:', error);
         res.status(500).json({
             error: 'Error en el servidor'
         });
@@ -57,16 +58,16 @@ export const DeleteProductById= async (req, res) => {
 export const DeleteCartById= async (req, res) => {
     const cid = req.params.cid;
     const deletedCart = await CartServices.DeleteCartById(cid);
-    console.log(deletedCart);
+    logger.INFO(deletedCart);
     res.send(deletedCart);
 }
 
 export const ModifyProductInCart =  async (req, res) => {
     const cid = req.params.cid;
     const prod = req.body;
-    console.log(cid, prod);
+    logger.INFO(cid, prod);
     const updatedCart = await CartServices.ModifyProductInCart(cid, prod);
-    console.log("a ver", updatedCart);
+    logger.INFO("a ver", updatedCart);
     res.send(updatedCart);
 }
 
@@ -147,7 +148,7 @@ export const purchaseCart = async (req, res) => {
         });
         }
     catch (error) {
-        console.log('Error al finalizar la compra:', error);
+        logger.INFO('Error al finalizar la compra:', error);
         res.status(500).json({
             error: 'Error en el servidor'
         });

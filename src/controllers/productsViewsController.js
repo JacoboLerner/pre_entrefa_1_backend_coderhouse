@@ -1,4 +1,5 @@
 //comunicacion entre controllador y capa de servicios
+import logger from "../config/loggers/factory.js";
 import CartModel from "../models/cart.schema.js";
 import * as ProductViewsServices from "../services/ProductsViewsService.js"
 
@@ -39,6 +40,7 @@ export const readViewsCartController = async (req, res) => {
             mailUser: mailUser
         });
     } catch (error) {
+        logger.ERROR(error)
         res.status(500).json({
             status: 'error',
             error: error.message
