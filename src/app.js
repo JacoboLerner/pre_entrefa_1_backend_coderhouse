@@ -25,7 +25,9 @@ import ErrorHandler from "./utils/errorMiddleware.js"
 import winston from "./utils/winston.js"
 import confiig from "./config/loggers/factory.js"
 import loggerRouter from "./routes/loggerRoutes.js"
-
+import cluster from "cluster";
+import { cpus } from "os";
+const numberOfProcess = cpus().length
 const app = express();
 const httpServer = HTTPServer(app)
 const io =  new SocketServer(httpServer)
@@ -75,8 +77,24 @@ app.use('/mockingproducts', mockingRouter);
 //nuevo desafio de loggers
 app.use('/api/loggers', loggerRouter)
 
-app.get("/chat",userAdminControl, (req,res)=>{
+app.use("/chat",userAdminControl, (req,res)=>{
   res.render("chat")
+})
+
+app.get("/simple", (req,res)=>{
+  let counter = 0
+  for (let i=1; i<=100;i++){
+    counter=counter+i
+  }
+  return res.status(200).json(counter)
+})
+
+app.get("/complex", (req,res)=>{
+  let counter = 0
+  for (let i=1; i<=1000000000;i++){
+    counter=counter+i
+  }
+  return res.status(200).json(counter)
 })
 
 app.use((req,res,next)=>{
@@ -115,5 +133,15 @@ io.on('connection', async (socket) => {
 })
 
 app.use(ErrorHandler);
+//applicando clusters
+if(cluster.isPrimary){
+  console.log("primary");
+  for ( let i=1; i<=numberOfProcess; i++){
+    cluster.fork()
+  }
+}else{
+  console.log("worker",process.pid)
+  httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));
+}
 
-httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));
+//httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));

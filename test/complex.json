@@ -1,0 +1,165 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.0": 50,
+      "vusers.created": 50,
+      "http.requests": 58,
+      "http.codes.200": 16,
+      "http.responses": 16,
+      "http.downloaded_bytes": 144,
+      "errors.ETIMEDOUT": 50,
+      "vusers.failed": 50
+    },
+    "rates": {
+      "http.request_rate": 17
+    },
+    "firstCounterAt": 1697466067164,
+    "firstHistogramAt": 1697466069116,
+    "lastCounterAt": 1697466086890,
+    "lastHistogramAt": 1697466076883,
+    "firstMetricAt": 1697466067164,
+    "lastMetricAt": 1697466086890,
+    "period": 1697466080000,
+    "summaries": {
+      "http.response_time": {
+        "min": 1863,
+        "max": 9450,
+        "count": 16,
+        "p50": 4147.4,
+        "median": 4147.4,
+        "p75": 7865.6,
+        "p90": 9416.8,
+        "p95": 9416.8,
+        "p99": 9416.8,
+        "p999": 9416.8
+      }
+    },
+    "histograms": {
+      "http.response_time": {
+        "min": 1863,
+        "max": 9450,
+        "count": 16,
+        "p50": 4147.4,
+        "median": 4147.4,
+        "p75": 7865.6,
+        "p90": 9416.8,
+        "p95": 9416.8,
+        "p99": 9416.8,
+        "p999": 9416.8
+      }
+    }
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.0": 50,
+        "vusers.created": 50,
+        "http.requests": 50,
+        "http.codes.200": 4,
+        "http.responses": 4
+      },
+      "rates": {
+        "http.request_rate": 50
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1697466067164,
+      "firstHistogramAt": 1697466069116,
+      "lastCounterAt": 1697466069166,
+      "lastHistogramAt": 1697466069166,
+      "firstMetricAt": 1697466067164,
+      "lastMetricAt": 1697466069166,
+      "period": "1697466060000",
+      "summaries": {
+        "http.response_time": {
+          "min": 1863,
+          "max": 1919,
+          "count": 4,
+          "p50": 1863.5,
+          "median": 1863.5,
+          "p75": 1901.1,
+          "p90": 1901.1,
+          "p95": 1901.1,
+          "p99": 1901.1,
+          "p999": 1901.1
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 1863,
+          "max": 1919,
+          "count": 4,
+          "p50": 1863.5,
+          "median": 1863.5,
+          "p75": 1901.1,
+          "p90": 1901.1,
+          "p95": 1901.1,
+          "p99": 1901.1,
+          "p999": 1901.1
+        }
+      }
+    },
+    {
+      "counters": {
+        "http.codes.200": 12,
+        "http.responses": 12,
+        "http.downloaded_bytes": 144,
+        "http.requests": 8,
+        "errors.ETIMEDOUT": 42,
+        "vusers.failed": 42
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1697466071379,
+      "firstHistogramAt": 1697466071379,
+      "lastCounterAt": 1697466078172,
+      "lastHistogramAt": 1697466076883,
+      "firstMetricAt": 1697466071379,
+      "lastMetricAt": 1697466078172,
+      "period": "1697466070000",
+      "summaries": {
+        "http.response_time": {
+          "min": 4139,
+          "max": 9450,
+          "count": 12,
+          "p50": 7709.8,
+          "median": 7709.8,
+          "p75": 9230.4,
+          "p90": 9416.8,
+          "p95": 9416.8,
+          "p99": 9416.8,
+          "p999": 9416.8
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 4139,
+          "max": 9450,
+          "count": 12,
+          "p50": 7709.8,
+          "median": 7709.8,
+          "p75": 9230.4,
+          "p90": 9416.8,
+          "p95": 9416.8,
+          "p99": 9416.8,
+          "p999": 9416.8
+        }
+      }
+    },
+    {
+      "counters": {
+        "errors.ETIMEDOUT": 8,
+        "vusers.failed": 8
+      },
+      "rates": {},
+      "firstCounterAt": 1697466081434,
+      "lastCounterAt": 1697466086890,
+      "firstMetricAt": 1697466081434,
+      "lastMetricAt": 1697466086890,
+      "period": "1697466080000",
+      "summaries": {},
+      "histograms": {}
+    }
+  ]
+}
