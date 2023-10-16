@@ -8,7 +8,11 @@
     "start": "nodemon src/app.js --mode production",
     "dev": "nodemon src/app.js --mode development",
     "simple": "artillery quick --count 50 --num 20 'http://localhost:8081/simple' -o ./test/simple.json",
-    "complex": "artillery quick --count 50 --num 20 'http://localhost:8081/complex' -o ./test/complex.json"
+    "complex": "artillery quick --count 50 --num 20 'http://localhost:8081/complex' -o ./test/complex.json",
+    "image-prod":"docker build -t app-backend-coderhouse-prod .",
+    "image-dev":"docker build -t app-backend-coderhouse-dev .",
+    "container-prod": "docker run -p 9999:8081 app-backend-coderhouse-prod",
+    "container-dev": "docker run -p 8888:8082 app-backend-coderhouse-dev "
   },
   "engines": {
     "node": "18.x"
