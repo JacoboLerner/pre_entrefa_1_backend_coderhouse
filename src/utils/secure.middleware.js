@@ -1,4 +1,5 @@
 import config from "../../env.js"
+import bcrypt from 'bcryptjs'
 
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
@@ -9,7 +10,7 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
+    if (req.user && (req.user.role === 'admin'|| req.user.role === 'premium') ){
         next();
         
     } else {
@@ -32,4 +33,17 @@ const userAdminControl = (req,res,next)=>{
     }
     } 
 
-export { isAuthenticated, isAdmin, hasAdminCredentials,userAdminControl };
+const generateRandomString = (num) => {
+        return [...Array(num)].map(() => {
+            const randomNum = ~~(Math.random() * 36);
+            return randomNum.toString(36);
+        })
+            .join('')
+            .toUpperCase();
+    }
+    
+const createHash = password => {
+        const saltRounds = 10;
+        return bcrypt.hashSync(password, saltRounds)
+    }
+export { isAuthenticated, isAdmin, hasAdminCredentials,userAdminControl,generateRandomString,createHash };

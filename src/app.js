@@ -27,6 +27,7 @@ import confiig from "./config/loggers/factory.js"
 import loggerRouter from "./routes/loggerRoutes.js"
 import cluster from "cluster";
 import { cpus } from "os";
+import ProductModel from "./models/product.schema.js";
 const numberOfProcess = cpus().length
 const app = express();
 const httpServer = HTTPServer(app)
@@ -124,10 +125,24 @@ io.on('connection', async (socket) => {
       await productManager.addProduct(data)    
       socket.emit('products', await productManager.getProducts())     
   })
-
+//se cambia logica para que el usuario premium pueda eliminar solo los productos que agrego, y que admin pueda borrar todo.
   socket.on('delete_prod',async (data) => {
-      await productManager.deleteProductbyId(data.pid)
-      socket.emit('products',await productManager.getProducts())
+    console.log(data.pid)
+      const prod = await ProductModel.findById(data.pid)
+      const userInfo = {
+        email: data.userEmail,
+        role: data.userRole,
+      };
+     console.log(prod.owner,userInfo.email,userInfo.role)
+      if (prod.owner == userInfo.email || userInfo.role == 'admin'){
+        await productManager.deleteProductbyId(data.pid)
+        socket.emit('products',await productManager.getProducts())
+
+      }else{
+        return console.error({ error: 'No puedes eliminar este producto' })
+      }
+  
+
   })
 
 })

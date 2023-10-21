@@ -30,6 +30,7 @@ socket.on("products", async (data) => {
         <td> ${producto.price} ARS     </td>
         <td> ${producto.stock}         </td>
         <td> ${producto.category}      </td>
+        <td> ${producto.owner}      </td>
     </tr>`
     })
 
@@ -47,8 +48,11 @@ addProductForm.addEventListener('submit', (e) => {
     const stock = document.getElementById('stock').value;
     const category = document.getElementById('category').value;
     const thumbnail = document.getElementById('thumbnail').value;
+    const createBtn = document.getElementById('createBtn')
+    const userEmail = createBtn.getAttribute('data-email');
+    const userRole = createBtn.getAttribute('data-role');
 
-    socket.emit('new_prod', {title, description, code, price, stock, category, thumbnail})
+    socket.emit('new_prod', {title, description, code, price, stock, category, thumbnail,owner:userEmail})
 
     document.getElementById('title').value = '';
     document.getElementById('description').value = '';
@@ -64,8 +68,10 @@ addProductForm.addEventListener('submit', (e) => {
 deleteProductForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const pid = document.getElementById('pid').value;
-
-    socket.emit('delete_prod', {pid})
+    const deletebtn = document.getElementById('deletebtn')
+    const userEmail = deletebtn.getAttribute('data-email');
+    const userRole = deletebtn.getAttribute('data-role');
+    socket.emit('delete_prod', {pid,userEmail,userRole})
 
     document.getElementById('pid').value = '';
     return false;

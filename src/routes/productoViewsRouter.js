@@ -6,6 +6,7 @@ const productsViewsRouter = Router();
 
 productsViewsRouter.get("/", isAuthenticated,ProductsViewsController.GetAllProducts);
 
+//puede ingresar si es admnino premium
 productsViewsRouter.get("/realtimeproducts",isAdmin, ProductsViewsController.GetAllRealTimeProducts)
 
 productsViewsRouter.get('/carts/:cid', ProductsViewsController.readViewsCartController)

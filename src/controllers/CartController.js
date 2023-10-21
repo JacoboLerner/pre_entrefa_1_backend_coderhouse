@@ -83,9 +83,10 @@ export const UpdateQuantity =  async (req, res) => {
 
 export const AddProductToCart =async (req, res) => {
     try{
+        const userId = req.session.user._id;
         const cid = req.params.cid
         const pid = req.params.pid 
-        const result = await CartServices.AddProductToCart(cid, pid)
+        const result = await CartServices.AddProductToCart(cid, pid,userId)
         res.status(201).send(result)
     }catch(e){
         res.status(502).send({ error: "Numero de producto/carrito incorrecto" });   

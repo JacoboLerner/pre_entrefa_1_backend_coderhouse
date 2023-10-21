@@ -20,7 +20,11 @@ export const GetAllProducts = async (req, res) => {
 };
 
 export const GetAllRealTimeProducts = async (req, res) => {
-    res.render("realTimeProducts", {});
+    const userInfo = {
+        email: req.session.user.email,
+        role: req.session.user.role,
+    };
+    res.render("realTimeProducts", {userInfo});
 }
 
 export const readViewsCartController = async (req, res) => {

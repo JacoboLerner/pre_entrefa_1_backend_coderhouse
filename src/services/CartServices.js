@@ -35,9 +35,9 @@ export const UpdateQuantity = async(cid,pid,quantity)=>{
     if (!result) return new Error("Producto no se pudo actulizar en cantidad!");
     return result
 }
-export const AddProductToCart = async(cid, pid)=>{
+export const AddProductToCart = async(cid, pid,userId)=>{
 
-    const result = await CartDao.AddProductToCart(cid, pid)
+    const result = await CartDao.AddProductToCart(cid, pid,userId)
     if (!result) return new Error("Producto no se pudo agregar!");
     return result
 }

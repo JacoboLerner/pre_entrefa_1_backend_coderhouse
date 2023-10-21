@@ -47,11 +47,16 @@ export default class CartManager{
         } 
     }
 
-    async addProductToCart(cartId, productId,user){
+    async addProductToCart(cartId, productId,userId){
         try {
-            logger.INFO(cartId, productId)
+            //parte del manejo para que usuario no pueda agregar su propio producto  en caso de premium
+            logger.INFO(userId)
+            const user = await User.findById(userId);
             const producto= await ProductModel.findById(productId)
             const cart = await CartModel.findById(cartId);
+            if (producto.owner == user.email && user.role == 'premium'){
+                return { status: 404, message: "Usted no puede agregar su propio producto a carrito." };
+            }
             if (!cart) {
                 return { status: 404, response: "Carrito no encontrado." } 
                 

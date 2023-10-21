@@ -29,7 +29,7 @@ export const UpdateQuantity = async(cid,pid,quantity)=>{
     const result = await CartService.updateQuantity(cid,pid,quantity)
     return result
 }
-export const AddProductToCart = async(cid, pid)=>{
-    const result = await CartService.addProductToCart(cid, pid)
+export const AddProductToCart = async(cid, pid,userId)=>{
+    const result = await CartService.addProductToCart(cid, pid,userId)
     return result
 }
