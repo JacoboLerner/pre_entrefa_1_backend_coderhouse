@@ -54,7 +54,7 @@ export const GetAllProducts = async (req, res) => {
         try{
             const body=req.body
             const result = await ProductServices.PostNewProduct([body])
-            res.send(result)
+            res.status(200).send(result)
         }catch(e){
         res.status(502).send({ error: "true" })
         }
@@ -65,7 +65,7 @@ export const GetAllProducts = async (req, res) => {
             const{pid}=req.params;
             const product=req.body
             const result=await ProductServices.UpdateProduct(pid,product)
-            res.send({update:true})
+            res.status(200).send(result)
         }catch(e){
         res.status(502).send({ error: "true" });   
         }
@@ -75,7 +75,7 @@ export const GetAllProducts = async (req, res) => {
         try{
             const pid = (req.params.pid);
             const product = await ProductServices.DeleteProductId(pid);
-            if (product)res.send({delete:true});
+            if (product)res.status(200).send(product);
         }catch(e){
             res.status(502).send({ error: "true, producto no existe" });   
             }

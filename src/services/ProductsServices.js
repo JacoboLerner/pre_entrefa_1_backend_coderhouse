@@ -26,10 +26,6 @@ export const UpdateProduct = async (pid,product) =>{
 
 export const DeleteProductId = async (id) =>{
     const product = await ProductDao.DeleteProduct(id)
-    if(product=undefined){
-        return false
-    }
-    if (!product) return new Error("Producto no se pudo eliminar");
-    return product;
+    return product
 
 }

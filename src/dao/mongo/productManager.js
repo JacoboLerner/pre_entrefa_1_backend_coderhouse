@@ -23,7 +23,7 @@ export default class ProductManager {
 
     addProduct= async (product)=> { 
         try{
-            const producto = await ProductModel.insertMany([product])
+            const producto = await ProductModel.create(product)
             logger.INFO(producto)  
             return producto
         }
@@ -70,7 +70,7 @@ export default class ProductManager {
                 const products= await ProductModel.findByIdAndDelete(deleteId)
                 const listaNueva= await ProductModel.find()
                 this.products = listaNueva;
-                return this.products;
+                return products;
     
             }catch(e){
                 logger.ERROR(e)

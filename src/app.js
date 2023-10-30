@@ -28,6 +28,10 @@ import loggerRouter from "./routes/loggerRoutes.js"
 import cluster from "cluster";
 import { cpus } from "os";
 import ProductModel from "./models/product.schema.js";
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
+import { isAuthenticated } from "./utils/secure.middleware.js";
+
 const numberOfProcess = cpus().length
 const app = express();
 const httpServer = HTTPServer(app)
@@ -67,6 +71,21 @@ app.use(passport.session());
 app.use(winston)
 const messageManager = new messagesManagerDB();
 const conn= mongoose.connect(config.mongoUrl)
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentación de la API del Ecommerce',
+      description: 'Proyecto Coderhouse 2022'
+    }
+  },
+  apis: [`${ __dirname}/docs/*.yaml`]
+};
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/docs',isAuthenticated,swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
 
 app.use('/',userRouter);
 app.use('/api/carts', cartRouter)
@@ -133,7 +152,6 @@ io.on('connection', async (socket) => {
         email: data.userEmail,
         role: data.userRole,
       };
-     console.log(prod.owner,userInfo.email,userInfo.role)
       if (prod.owner == userInfo.email || userInfo.role == 'admin'){
         await productManager.deleteProductbyId(data.pid)
         socket.emit('products',await productManager.getProducts())
