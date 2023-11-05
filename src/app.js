@@ -1,10 +1,5 @@
 import express from "express";
 import handlebars from "express-handlebars";
-import productsRouter from "./routes/productsRoutes.js";
-import cartRouter from "./routes/cartRoutes.js";
-import productsViewsRouter from "./routes/productoViewsRouter.js";
-import userRouter from "./routes/userRoutes.js";
-import sessionsRouter from './routes/sessionsRoutes.js'
 import ProductManager from "./dao/mongo/productManager.js";
 const productManager = new ProductManager("./src/db/productos.json")
 import { Server as SocketServer } from "socket.io";
@@ -18,19 +13,16 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import  config  from "../env.js";
-import purchaserouter from "./routes/mailPurchaseRoutes.js";
-import { userAdminControl } from "./utils/secure.middleware.js";
-import mockingRouter from "./routes/mocking.js"
 import ErrorHandler from "./utils/errorMiddleware.js"
 import winston from "./utils/winston.js"
 import confiig from "./config/loggers/factory.js"
-import loggerRouter from "./routes/loggerRoutes.js"
 import cluster from "cluster";
 import { cpus } from "os";
 import ProductModel from "./models/product.schema.js";
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 import { isAuthenticated } from "./utils/secure.middleware.js";
+import router from "./routes/indexRoutes.js";
 
 const numberOfProcess = cpus().length
 const app = express();
@@ -38,18 +30,15 @@ const httpServer = HTTPServer(app)
 const io =  new SocketServer(httpServer)
 
 
-app.use(cookieParser());
+
 app.engine("handlebars",handlebars.engine())
 app.set("views",__dirname + "/views")
 app.set("view engine","handlebars")
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-
 app.use("/assets",express.static( __dirname + "/public"));
 app.use(express.static( __dirname + "/public"))
-
-
-
+app.use(cookieParser());
 
 app.use(
   session({
@@ -85,36 +74,10 @@ const swaggerOptions = {
 
 const specs = swaggerJSDoc(swaggerOptions)
 app.use('/docs',isAuthenticated,swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+app.use(router)
 
-
-app.use('/',userRouter);
-app.use('/api/carts', cartRouter)
-app.use('/api/products', productsRouter);
-app.use('/products', productsViewsRouter);
-app.use('/api/sessions', sessionsRouter); 
-app.use('/sendMailPurchase', purchaserouter); 
-app.use('/mockingproducts', mockingRouter);
-//nuevo desafio de loggers
-app.use('/api/loggers', loggerRouter)
-
-app.use("/chat",userAdminControl, (req,res)=>{
-  res.render("chat")
-})
-
-app.get("/simple", (req,res)=>{
-  let counter = 0
-  for (let i=1; i<=100;i++){
-    counter=counter+i
-  }
-  return res.status(200).json(counter)
-})
-
-app.get("/complex", (req,res)=>{
-  let counter = 0
-  for (let i=1; i<=1000000000;i++){
-    counter=counter+i
-  }
-  return res.status(200).json(counter)
+app.use("/cat",passport.authenticate("jwt",{session:false}), (req,res)=>{
+  res.send(req.user);
 })
 
 app.use((req,res,next)=>{

@@ -7,6 +7,7 @@ import UserPasswordModel from "../models/user_password.schema.js";
 import  config  from "../../env.js";
 import { generateRandomString,createHash } from "../utils/secure.middleware.js";
 import bcrypt from 'bcryptjs'
+import { generateTokenWithExpire } from "../utils/jwt.js";
 
 const router = Router();
 router.post("/register", passport.authenticate("register",{failureRedirect:"/failregister"}), async(req,res)=>{
@@ -20,14 +21,17 @@ router.get("/failregister", async (req,res)=>{
 })
 
 
-router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res,) => {
-    //uso de DTO
-    if(!req.user)return res.status(400).json({ message: 'Credenciales inválidas.' });
-    req.session.user=req.user
+router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"}), async (req, res) => {
+    const {email}=req.body;
+    const user= await User.findOne({email:email})
+    if(!user)return res.status(400).json({status:"error", message: 'Credenciales inválidas.' });
+    const access_token=generateTokenWithExpire(user)
+    req.session.user=req.user   
     const result = new UserDTO(req.user);
-    res.send({status: "success",payload: result})
-
-    
+    res.cookie("coderCookieToken", access_token,{
+        maxAge:60*60*1000,
+        httpOnly:true
+    }).send({ payload: result,token:access_token})
 
 });
 //rutas para recuperacion u cambio de contraseñas

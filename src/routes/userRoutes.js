@@ -3,7 +3,9 @@ import { isAuthenticated } from "../utils/secure.middleware.js";
 import UserDTO from "../dto/User.js";
 import User from "../models/user.schema.js";
 
+
 const userRouter = Router();
+
 
 userRouter.get('/', (req, res) => {
     if (req.session.user) {

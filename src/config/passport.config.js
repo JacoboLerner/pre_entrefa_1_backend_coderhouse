@@ -4,19 +4,44 @@ import User from "../models/user.schema.js";
 import bcrypt from "bcryptjs"; // Librería para encriptar contraseñas
 import { hasAdminCredentials } from "../utils/secure.middleware.js";
 import GitHubStrategy from "passport-github2";
-import config from "../../env.js"
 import EErrors from "../error/invalid.js";
 import { generateProductErrorInfo } from "../error/userError.js";
 import CustomError from "../error/customError.js"
 import logger from "../config/loggers/factory.js"
+import  config  from "../../env.js";
+import jwt from "passport-jwt";
+
+const JWTStrategy= jwt.Strategy;
+const ExtractJWT=jwt.ExtractJwt;
 
 const LocalStrategy= local.Strategy;
 
+const cookieExtractor=req=>{
+    let token=null;
+    if( req && req.cookies){
+        token= req.cookies['coderCookieToken']
+    }
+    return token
+}
 const initializePassport =()=>{
+    passport.use("jwt", new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: config.privateKey,
+    }, async(jwt_payload,done)=>{
+        try{
+            return done(null,jwt_payload);
+            
+        }
+        catch(err){
+            return done(err)
+        }
+    }))
+
+
     passport.use("github",new GitHubStrategy({
         clientID:"Iv1.16380aa0534ce3c7",
         clientSecret:"b7004419dda2c049449905155638560f53c78335",
-        callbackURL:"http://localhost:8080/api/sessions/githubcallback"
+        callbackURL:`http://localhost:${config.port}/api/sessions/githubcallback`
     },async(accessToken, refreshToken,profile,done)=>{
         try{
             let user= await User.findOne ({email: profile._json.email})
@@ -109,5 +134,7 @@ const initializePassport =()=>{
         done (null,user);
     })
 }
+
+
 
 export default initializePassport

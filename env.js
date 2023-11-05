@@ -15,5 +15,6 @@ export default {
     adminName: process.env.ADMIN_EMAIL,
     adminPassword: process.env.ADMIN_PASSWORD,
     mailDelEcommerce: process.env.NODEMAILER_USER,
-    mailPasswordDelEcommerce: process.env.NODEMAILER_PASSWORD
+    mailPasswordDelEcommerce: process.env.NODEMAILER_PASSWORD,
+    privateKey:process.env.PRIVATE_KEY
 }

@@ -12,14 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`
           },
           body: JSON.stringify({ email, password }),
-        });
+        })
+
   
         const data = await response.json();
-  
+        
         if (response.ok) {
           // Redireccionar al perfil del usuario en caso de inicio de sesión exitoso
+         localStorage.setItem("authToken",data.token)
           window.location.href = "/products";
 
         } else {

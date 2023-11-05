@@ -1,9 +1,9 @@
 paths:
-  /api/products:
+  /api/carts:
     get:
       summary: Devuelve todos los productos.
       tags:
-        - Products
+        - Carts
       responses:
         "200":
           description: Devuelve todos los productos.
@@ -12,7 +12,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: '#/components/schemas/product'
+                  $ref: '#/components/schemas/cart'
               example:
                 message: Productos encontrados.
                 results:
@@ -51,12 +51,12 @@ paths:
       summary: Crea un producto en la base de datos
       description: Add product.
       tags:
-        - Products
+        - Carts
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/cart'
             example:
               title: Producto 1
               description: Descripción del producto 1
@@ -72,7 +72,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/cart'
               example:
                 message: Producto agregado exitosamente.
                 product:
@@ -98,11 +98,11 @@ paths:
               example:
                 error: error
 
-  /api/products/{productId}:
+  /api/carts/{cartId}:
     get:
       summary: Devuelve uno de todos los productos.
       tags:
-        - Products
+        - Carts
       parameters:
         - name: productId
           in: path
@@ -114,7 +114,7 @@ paths:
               schema:
                 type: object
                 items:
-                  $ref: '#/components/schemas/product'
+                  $ref: '#/components/schemas/cart'
               example:
                 message: Producto encontrado.
                 results:
@@ -143,7 +143,7 @@ paths:
     put:
       summary: Actualiza producto con ID
       tags:
-        - Products
+        - Carts
       parameters:
         - name: productId
           in: path
@@ -152,7 +152,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/product'
+              $ref: '#/components/schemas/cart'
             example:
               title: Producto editado 1
               description: Descripción del producto editado 1
@@ -168,7 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/cart'
               example:
                 message: Producto actualizado
                 product:
@@ -197,7 +197,7 @@ paths:
     delete:
       summary: Borrar el product por ID.
       tags:
-        - Products
+        - Carts
       parameters:
         - name: productId
           in: path
@@ -208,7 +208,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/product'
+                $ref: '#/components/schemas/cart'
               example:
                 message: Se ha eliminado el producto exitosamente.
                 product:
@@ -235,7 +235,7 @@ paths:
                 error: producto no existe
 components:
   schemas:
-    product:
+    cart:
       type: object
       properties:
         _id:
