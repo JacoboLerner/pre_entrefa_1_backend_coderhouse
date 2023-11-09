@@ -1,4 +1,5 @@
 import logger from "../config/loggers/factory.js";
+import ProductModel from "../models/product.schema.js";
 import * as ProductServices from "../services/ProductsServices.js"
 
 export const GetAllProducts = async (req, res) => {
@@ -50,11 +51,20 @@ export const GetAllProducts = async (req, res) => {
         }
         }
 
+    export const GetProductsTotal = async (req, res) => {
+            try{
+                const product = await ProductModel.find()
+                return res.status(200).json({status:"success", payload:product})
+            } catch (e){
+                logger.ERROR(e)
+            }
+            }
+
     export const PostProduct = async(req,res)=>{
         try{
             const body=req.body
-            const result = await ProductServices.PostNewProduct([body])
-            res.status(200).send(result)
+            const result = await ProductServices.PostNewProduct(body)
+            res.status(201).send({payload:result})
         }catch(e){
         res.status(502).send({ error: "true" })
         }
@@ -75,7 +85,7 @@ export const GetAllProducts = async (req, res) => {
         try{
             const pid = (req.params.pid);
             const product = await ProductServices.DeleteProductId(pid);
-            if (product)res.status(200).send(product);
+            if (product)return res.status(200).json({payload:product});
         }catch(e){
             res.status(502).send({ error: "true, producto no existe" });   
             }

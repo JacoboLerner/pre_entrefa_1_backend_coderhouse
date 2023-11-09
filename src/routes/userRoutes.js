@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { isAuthenticated } from "../utils/secure.middleware.js";
 import UserDTO from "../dto/User.js";
-import User from "../models/user.schema.js";
+import User from "../models/user.schema.js"
 
 
 const userRouter = Router();
@@ -14,6 +14,8 @@ userRouter.get('/', (req, res) => {
         res.render('login');
     }
 });
+
+
 
 userRouter.get('/register', (req, res) => {
     if (req.session.user) {
