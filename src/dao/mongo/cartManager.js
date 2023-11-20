@@ -39,7 +39,7 @@ export default class CartManager{
 
     async createCart(){
         try{
-            const newCart= await CartModel.create({ products: []})
+            const newCart= await CartModel.create({ products: [],totalPrice:0})
         
             return newCart;
         }catch(error){
@@ -53,6 +53,7 @@ export default class CartManager{
             logger.INFO(userId)
             const user = await User.findById(userId);
             const producto= await ProductModel.findById(productId)
+            const productPrice= producto.price
             const cart = await CartModel.findById(cartId);
             if (producto.owner == user.email && user.role == 'premium'){
                 return { status: 404, message: "Usted no puede agregar su propio producto a carrito." };
@@ -70,14 +71,17 @@ export default class CartManager{
             );
             if (prodIndex !== -1) {
                 cart.products[prodIndex].quantity++;
+                cart.products[prodIndex].total=cart.products[prodIndex].price * cart.products[prodIndex].quantity;
             } else {
-                const newProduct = { product: productId, quantity: 1 };
+                const newProduct = { product: productId, price:productPrice, quantity: 1, total:productPrice };
                 cart.products.push(newProduct);
             }
-            await CartModel.findByIdAndUpdate(cartId, { products: cart.products }).exec();
+            const newtotalPrice = cart.products.reduce((sum, product) => sum + product.total, 0)
+            console.log(newtotalPrice);
+            await CartModel.findByIdAndUpdate(cartId, { products: cart.products ,totalPrice:newtotalPrice}).exec();
 
             await cart.save();
-            logger.INFO(`se agrego ${productId} al carrito ${cartId}`)
+            logger.INFO(`se agrego ${productId} al carrito ${cartId}, tiene un precio de ${productPrice}`)
             return true;
         } catch (error) {
             throw new Error("No se logro agregar al carrito " + error);

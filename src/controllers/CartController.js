@@ -27,8 +27,10 @@ export const GetAllCarts = async (req, res) => {
             const mailUser = req.session.user.email;
             res.render('cart', {
                 cid: result._id,
+                totalprice:result.totalPrice,
                 products: result.products,
-                mailUser: mailUser
+                mailUser: mailUser,
+                price: result.price
             });
         } catch (error) {
             logger.ERROR(error)

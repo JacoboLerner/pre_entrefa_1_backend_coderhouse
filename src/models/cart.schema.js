@@ -26,10 +26,20 @@ const cartSchema = new mongoose.Schema({
                     type: Number,
                     default: 1,
                 },
+                price: {
+                  type: Number
+              },
+              total: {
+                type: Number
+            },
             },
         ],
         default: []
     },
+    totalPrice:
+    {
+      type:Number
+    }
 });
 
 const CartModel = mongoose.model("carts", cartSchema)

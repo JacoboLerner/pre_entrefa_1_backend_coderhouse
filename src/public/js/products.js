@@ -35,7 +35,6 @@ const addToCart = async (e) => {
     });
     //manejo para que usuario no pueda agregar su propio producto en caso de premium
     const result = await response.json();
-    console.log(result);
     if (result===true) {        
         alert("Se ha agregado producto de forma exitosa");
       } else {
