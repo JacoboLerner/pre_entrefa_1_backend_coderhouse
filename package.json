@@ -13,7 +13,7 @@
     "image-dev": "docker build -t app-backend-coderhouse-dev .",
     "container-prod": "docker run -p 9999:8081 app-backend-coderhouse-prod",
     "container-dev": "docker run -p 8888:8082 app-backend-coderhouse-dev ",
-    "super":"mocha test/supertest"
+    "super": "mocha test/supertest"
   },
   "engines": {
     "node": "18.x"

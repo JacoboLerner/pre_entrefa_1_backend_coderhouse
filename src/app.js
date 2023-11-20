@@ -21,6 +21,7 @@ import { cpus } from "os";
 import ProductModel from "./models/product.schema.js";
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
+import compression from "express-compression";
 import { isAuthenticated } from "./utils/secure.middleware.js";
 import router from "./routes/indexRoutes.js";
 
@@ -74,6 +75,9 @@ const swaggerOptions = {
 
 const specs = swaggerJSDoc(swaggerOptions)
 app.use('/docs',isAuthenticated,swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+app.use(compression({
+  brotli:{enabled:true,zlib:{}}
+}));
 app.use(router)
 
 app.use("/cat",passport.authenticate("jwt",{session:false}), (req,res)=>{
@@ -139,5 +143,6 @@ if(cluster.isPrimary){
   console.log("worker",process.pid)
   httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));
 }
+
 
 //httpServer.listen(config.port,()=>console.log(`connectados en ${config.port}`));

@@ -18,6 +18,28 @@ const isAdmin = (req, res, next) => {
     }
 };
 
+const adminOrPremium = (req, res, next) => {
+    const user = req.user;
+    if (user.role !== 'admin' && user.role !== 'premium') {
+        res.status(403).json({
+            message: 'Forbidden'
+        });
+    } else {
+        next();
+    }
+}
+
+const userOrPremium = (req, res, next) => {
+    const user = req.user;
+    if (user.role !== 'usuario' && user.role !== 'premium') {
+        res.status(403).json({
+            message: 'Forbidden'
+        });
+    } else {
+        next();
+    }
+}
+
 const hasAdminCredentials = (email, password) => {
     // Verificar si las credenciales coinciden con las del administrador usando ademas el dotenv
     if (email === config.adminName && password === config.adminPassword){
@@ -46,4 +68,4 @@ const createHash = password => {
         const saltRounds = 10;
         return bcrypt.hashSync(password, saltRounds)
     }
-export { isAuthenticated, isAdmin, hasAdminCredentials,userAdminControl,generateRandomString,createHash };
+export { isAuthenticated, isAdmin, hasAdminCredentials,userAdminControl,generateRandomString,createHash ,adminOrPremium,userOrPremium};

@@ -75,6 +75,7 @@ export const GetAllProducts = async (req, res) => {
             const{pid}=req.params;
             const product=req.body
             const result=await ProductServices.UpdateProduct(pid,product)
+            console.log(result);
             res.status(200).send(result)
         }catch(e){
         res.status(502).send({ error: "true" });   
@@ -85,6 +86,7 @@ export const GetAllProducts = async (req, res) => {
         try{
             const pid = (req.params.pid);
             const product = await ProductServices.DeleteProductId(pid);
+            console.log(product);
             if (product)return res.status(200).json({payload:product});
         }catch(e){
             res.status(502).send({ error: "true, producto no existe" });   

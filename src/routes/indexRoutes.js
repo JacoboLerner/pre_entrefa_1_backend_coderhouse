@@ -12,18 +12,6 @@ import User from "../models/user.schema.js";
 const router = Router();
 
 router.use('/',userRouter);
-router.delete('/api/users/:uid', async (req, res) => {
-    try{
-        const uid = req.params.uid;
-        const userDelete= await User.findByIdAndDelete(uid)
-        if(userDelete){return res.status(200).json({status:"success", message:"User deleted"})}
-    }catch(e){
-        res.status(502).send({ error: "true" })
-        }
-
-
-    
-});
 router.use('/api/carts', cartRouter)
 router.use('/api/products', productsRouter);
 router.use('/products', productsViewsRouter);

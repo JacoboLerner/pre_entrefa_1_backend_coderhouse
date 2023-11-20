@@ -5,7 +5,7 @@ import User from "../models/user.schema.js";
 import nodemailer from 'nodemailer'
 import UserPasswordModel from "../models/user_password.schema.js";
 import  config  from "../../env.js";
-import { generateRandomString,createHash } from "../utils/secure.middleware.js";
+import { generateRandomString,createHash, isAuthenticated } from "../utils/secure.middleware.js";
 import bcrypt from 'bcryptjs'
 import { generateTokenWithExpire } from "../utils/jwt.js";
 
@@ -33,6 +33,15 @@ router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"
         httpOnly:true
     }).send({ payload: result,token:access_token})
 
+});
+
+router.get('/logout', isAuthenticated, (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log(err.message);
+        }
+        res.redirect('/');
+    });
 });
 //rutas para recuperacion u cambio de contraseñas
 router.get('/forget_password', async (req, res) => {
@@ -127,6 +136,63 @@ router.get("/githubcallback",passport.authenticate("github", {failureRedirect: "
     req.session.user=req.user;
     console.log(req.session.user)
     res.redirect("/")
+});
+
+router.delete('/:uid', async (req, res) => {
+    try{
+        const uid = req.params.uid;
+        const userDelete= await User.findByIdAndDelete(uid)
+        if(userDelete){return res.status(200).json({status:"success", message:"User deleted"})}
+    }catch(e){
+        res.status(502).send({ error: "true" })
+        }
+
+
+    
+});
+
+
+
+router.get('/premium/:uid', async (req, res) => {
+    const userid = req.session.user._id
+
+
+    // Verificar que el rol proporcionado sea válido (usuario o premium)
+
+    try {
+        const user= await User.findById(userid)
+        
+        if(user.role =='usuario'){
+            const updatedUser= await User.findOneAndUpdate(
+                {_id:userid},
+            { role: 'premium'},
+            { new: true }
+        );
+        await updatedUser.save();
+        console.log(updatedUser.role+" hola 1")
+        res.render('role_cambiado', {
+            message:"El usuario ahora tiene role de: " + updatedUser.role
+        });
+    }else if(user.role=='premium'){
+        const updatedUser=await User.findOneAndUpdate(
+            {_id:userid},
+            { role: "usuario" },
+            { new: true }
+        );
+        await updatedUser.save();
+        console.log(updatedUser.role+" hola 2")
+        res.render('role_cambiado', {
+            message:"El usuario ahora tiene role de: " + updatedUser.role
+        })
+   
+    } else{
+        return res.status(400).json({ error: 'Rol no válido' });
+    }
+
+
+    } catch (error) {
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
 export default router;

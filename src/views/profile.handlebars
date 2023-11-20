@@ -5,7 +5,7 @@
     <h5 class="card-title"><b>Nombre: </b>{{ this.fullname }}</h5>
     <h5 class="card-text"> <b>Mail: </b>{{ this.email }}</h5>
     <h5 class="card-text"><b> Edad: </b> {{ this.age }}</h5>
-    <form action="/logout" method="GET">
+    <form action="/api/sessions/logout" method="GET">
       <button class="btn btn-primary" type="submit">Logout</button>
     </form>
   </div>

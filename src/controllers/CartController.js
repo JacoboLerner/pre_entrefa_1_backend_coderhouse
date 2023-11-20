@@ -14,6 +14,31 @@ export const GetAllCarts = async (req, res) => {
         }
     }
 
+    export const returnOwnerCart = async (req, res) => {
+        try {
+            const id = req.params.cid
+            const result = await CartModel.findById(id).lean().exec();
+            if (result === null) {
+                return res.status(404).json({
+                    status: 'error',
+                    error: 'Cart not found'
+                });
+            }
+            const mailUser = req.session.user.email;
+            res.render('cart', {
+                cid: result._id,
+                products: result.products,
+                mailUser: mailUser
+            });
+        } catch (error) {
+            logger.ERROR(error)
+            res.status(500).json({
+                status: 'error',
+                error: error.message
+            });
+        }
+    }
+
 export const CreateCart = async (req, res) => {
     try{
         const products = req.body;

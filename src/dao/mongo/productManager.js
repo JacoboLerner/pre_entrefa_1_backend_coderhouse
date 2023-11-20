@@ -54,8 +54,8 @@ export default class ProductManager {
                     ...productData,
                     ...obj
                 }
-                await ProductModel.updateOne({ _id: id }, updatedProduct)
-    
+                await ProductModel.updateOne({ _id: id }, updatedProduct,{new:true})
+                
                 return { status: 200, response: "Producto actualizado." }
 
 
@@ -68,8 +68,6 @@ export default class ProductManager {
         deleteProductbyId=async(deleteId)=>{
             try{
                 const products= await ProductModel.findByIdAndDelete(deleteId)
-                const listaNueva= await ProductModel.find()
-                this.products = listaNueva;
                 return products;
     
             }catch(e){

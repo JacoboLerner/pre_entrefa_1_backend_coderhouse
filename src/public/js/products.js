@@ -47,7 +47,7 @@ $( function () {
     $(".carrrito").on("click",()=>{
         let cartID = localStorage.getItem("cartId")
         window.location.href = `/`,
-        window.location.href = `/products/carts/${cartID}`
+        window.location.href = `/api/carts/${cartID}`
         
         
     })
