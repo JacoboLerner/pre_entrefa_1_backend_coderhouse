@@ -49,13 +49,13 @@ export default class ProductManager {
                 const indexProduct = await ProductModel.findById(id)
                 if(!indexProduct) return { status: 404, response: "Producto no encontrado." }
                 const productData = indexProduct._doc
-                console.log(productData)
+                console.log(productData,id,obj)
                 const updatedProduct = {
                     ...productData,
                     ...obj
                 }
-                await ProductModel.updateOne({ _id: id }, updatedProduct,{new:true})
-                
+                const walter= await ProductModel.updateOne({ _id: id }, updatedProduct)
+                console.log(walter);
                 return { status: 200, response: "Producto actualizado." }
 
 

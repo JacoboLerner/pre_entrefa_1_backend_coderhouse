@@ -111,6 +111,20 @@ io.on('connection', async (socket) => {
       await productManager.addProduct(data)    
       socket.emit('products', await productManager.getProducts())     
   })
+  socket.on('mod_prod', async (data) => {   
+    const userInfo = {
+      email: data.userEmail,
+      role: data.userRole,
+    };
+    const prod = await ProductModel.findById(data.id)         
+    if (prod.owner == userInfo.email || userInfo.role == 'admin'){
+      await productManager.updateProduct(data.id,data)
+      socket.emit('products',await productManager.getProducts())
+
+    }else{
+      return console.error({ error: 'No puedes modificar este producto' })
+    }   
+})
 //se cambia logica para que el usuario premium pueda eliminar solo los productos que agrego, y que admin pueda borrar todo.
   socket.on('delete_prod',async (data) => {
     console.log(data.pid)
@@ -126,10 +140,7 @@ io.on('connection', async (socket) => {
       }else{
         return console.error({ error: 'No puedes eliminar este producto' })
       }
-  
-
   })
-
 })
 
 app.use(ErrorHandler);

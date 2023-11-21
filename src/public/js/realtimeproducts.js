@@ -2,6 +2,7 @@ const socket = io();
 
 const addProductForm = document.getElementById('addProduct');
 const deleteProductForm = document.getElementById('deleteProduct');
+const modProductForm = document.getElementById('modProduct');
 
 $( function () {
     $("#toTheChat").on("click",()=>{
@@ -74,5 +75,24 @@ deleteProductForm.addEventListener('submit', (e) => {
     socket.emit('delete_prod', {pid,userEmail,userRole})
 
     document.getElementById('pid').value = '';
+    return false;
+});
+
+modProductForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('body').value;
+    const description = document.getElementById('description2').value;
+    const code = document.getElementById('code2').value;
+    const price = document.getElementById('price2').value;
+    const stock = document.getElementById('stock2').value;
+    const category = document.getElementById('category2').value;
+    const thumbnail = document.getElementById('thumbnail2').value;
+    const id=document.getElementById('pid2').value;
+    const modbtn = document.getElementById('modbtn')
+    const userEmail = modbtn.getAttribute('data-email');
+    const userRole = modbtn.getAttribute('data-role');
+    socket.emit('mod_prod', {title,description, code, price, stock, category, thumbnail,id,userEmail,userRole})
+
+    document.getElementById('body').value = '';
     return false;
 });
