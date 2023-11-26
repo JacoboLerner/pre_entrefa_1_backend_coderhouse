@@ -1,55 +1,7 @@
 paths:
-  /api/carts:
-    get:
-      summary: Devuelve todos los productos.
-      tags:
-        - Carts
-      responses:
-        "200":
-          description: Devuelve todos los productos.
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref: '#/components/schemas/cart'
-              example:
-                message: Productos encontrados.
-                results:
-                  - _id: 60b4b0a9e6c3c2b4c8a7b8b2
-                    title: Producto 1
-                    description: Descripción del producto 1
-                    price: 100
-                    thumbnail:
-                      - https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                    code: 1
-                    stock: 10
-                    category: Categoria 1
-                  - _id: 60b4b0a9e6c3c2b4c8a7b8b3
-                    title: Producto 2
-                    description: Descripción del producto 2
-                    price: 200
-                    thumbnail:
-                      - https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                    code: 2
-                    stock: 20
-                    category: Categoria 2
-        "400":
-          description: Bad request.
-          content:
-            application/json:
-              example:
-                error: error al solicitar productos
-        "502":
-          description: true,hubo un error
-          content:
-            application/json:
-              example:
-                error: true,hubo un error
-  
+  /api/carts/test:
     post:
-      summary: Crea un producto en la base de datos
-      description: Add product.
+      summary: Crea un Cart.
       tags:
         - Carts
       requestBody:
@@ -58,55 +10,48 @@ paths:
             schema:
               $ref: '#/components/schemas/cart'
             example:
-              title: Producto 1
-              description: Descripción del producto 1
-              price: 100
-              thumbnail:
-                https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-              code: jdjdjdjjdPrueba
-              stock: 10
-              category: Categoria 1
+              products: [
+                product: {
+                },
+                quantity: 10,
+                price: 1000
+              ]
+              totalPrice: 10000
       responses:
         "200":
-          description: Devuelve el producto creado.
+          description: Devuelve el cart creado.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/cart'
               example:
-                message: Producto agregado exitosamente.
-                product:
+                message: Carrito devuelto.
+                cart:
                   _id: 60b4b0a9e6c3c2b4c8a7b8b2
-                  title: Producto 1
-                  description: Descripción del producto 1
-                  price: 100
-                  thumbnail:
-                    https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                  code: codigoprueba
-                  stock: 10
-                  category: Categoria 1
+                  products: []
+                  totalPrice: 10000
         "400":
           description: Bad request.
           content:
             application/json:
               example:
-                error: error al solicitar productos
+                error: error al crear carrito
         "502":
-          description: error en el servidor
+          description: true,hubo un error
           content:
             application/json:
               example:
-                error: error
+                error: true,hubo un error
 
-  /api/carts/{cartId}:
+  /api/carts/test/{cartId}:
     get:
-      summary: Devuelve uno de todos los productos.
+      summary: Devuelve uno de todos los carritos.
       tags:
         - Carts
       parameters:
-        - name: productId
+        - name: cartId
           in: path
-          description: Product ID
+          description: Cart ID, usar 655bbc3c1a0eb289df0c8023
       responses:
         "200":
           content:
@@ -116,17 +61,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/cart'
               example:
-                message: Producto encontrado.
+                message: Carrito encontrado.
                 results:
-                    owner: admin/user
-                    _id: 60b4b0a9e6c3c2b4c8a7b8b2
-                    title: Producto 1
-                    description: Descripción del producto 1
-                    price: 100
-                    thumbnail: https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                    code: 1
-                    stock: 10
-                    category: Categoria 1
+                    _id: 655bbc3c1a0eb289df0c8023
+                    products: []
+                    totalPrice: 10000
         "400":
           description: Bad request.
           content:
@@ -139,100 +78,84 @@ paths:
             application/json:
               example:
                 error: true,hubo un error al consultar al servidor
-
     put:
-      summary: Actualiza producto con ID
-      tags:
-        - Carts
-      parameters:
-        - name: productId
-          in: path
-          description: Product ID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/cart'
-            example:
-              title: Producto editado 1
-              description: Descripción del producto editado 1
-              price: 1012
-              thumbnail:
-                https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-              code: 1
-              stock: 19
-              category: Categoria 1
-      responses:
-        "200":
-          description: Devuelve producto actualizado.
+        summary: Actualiza un producto en carrito
+        tags:
+          - Carts
+        parameters:
+          - name: cartId
+            in: path
+            description: cartId usar 656393ac4c09b9219dc97212
+        requestBody:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/product'
               example:
-                message: Producto actualizado
-                product:
-                  _id: 60b4b0a9e6c3c2b4c8a7b8b2
-                  title: Producto editado 1
-                  description: Descripción del producto editado 1
-                  price: 1012
-                  thumbnail:
-                    https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                  code: 1
-                  stock: 19
-                  category: Categoria 1
-        "400":
-          description: Mala solicitud.
-          content:
-            application/json:
-              example:
-                error: error
-        "502":
-          description: error.
-          content:
-            application/json:
-              example:
-                error: error
-
+                title: Producto editado 2
+                description: Descripción del producto editado 1
+                price: 1012
+                thumbnail:
+                  https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
+                code: 1
+                stock: 19
+                category: Categoria 1
+        responses:
+          "200":
+            description: Devuelve carrito actualizado.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/cart'
+                example:
+                  message: Carrito actualizado
+                  carrito:
+                    _id: 656393ac4c09b9219dc97212
+                    products: []
+                    totalPrice: 10000
+          "400":
+            description: Mala solicitud.
+            content:
+              application/json:
+                example:
+                  error: error
+          "502":
+            description: error.
+            content:
+              application/json:
+                example:
+                  error: error
     delete:
-      summary: Borrar el product por ID.
-      tags:
-        - Carts
-      parameters:
-        - name: productId
-          in: path
-          description: Product ID
-      responses:
-        "200":
-          description: Devuelve el producto borrado.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/cart'
-              example:
-                message: Se ha eliminado el producto exitosamente.
-                product:
-                  _id: 60b4b0a9e6c3c2b4c8a7b8b2
-                  title: Producto 1
-                  description: Descripción del producto 1
-                  price: 1012
-                  thumbnail:
-                    https://cdn3.iconfinder.com/data/icons/education-209/64/bus-vehicle-transport-school-128.png
-                  code: 1
-                  stock: 19
-                  category: Categoria 1
-        "400":
-          description: Bad request.
-          content:
-            application/json:
-              example:
-                error: error
-        "502":
-          description: error de servidor.
-          content:
-            application/json:
-              example:
-                error: producto no existe
+        summary: Borrar el Carrito por ID.
+        tags:
+          - Carts
+        parameters:
+          - name: cartId
+            in: path
+            description: cartId //Usar uno usado con post
+        responses:
+          "200":
+            description: Devuelve el producto borrado.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/cart'
+                example:
+                  message: Carrito borrado.
+                  status: 200
+          "400":
+            description: Bad request.
+            content:
+              application/json:
+                example:
+                  error: error
+          "502":
+            description: error de servidor.
+            content:
+              application/json:
+                example:
+                  error: producto no existe
+
 components:
   schemas:
     cart:
@@ -241,34 +164,9 @@ components:
         _id:
           type: string
           description: Id autogenerado de Mongo
-        title:
-          type: string
-          description: Nombre del producto
-        description:
-          type: string
-          description: Descripción del producto
-        code:
-          type: string
-          description: Código del producto
-        price:
+        products:
+          type: array
+          description: Array con productos, con sus respectivas cantidades y precios
+        totalPrice:
           type: number
-          description: Precio del producto
-        stock:
-          type: number
-          description: Cantidad en stock del producto
-        category:
-          type: string
-          description: Categoria a la que pertenece el producto
-        thumbnail:
-          type: string
-          description: Links a las rutas de las imágenes del producto
-        owner:
-          type: string
-          description: Datos de quien creó el producto en la base de datos
-      required:
-        - title
-        - description
-        - code
-        - price
-        - stock
-        - category
+          description: Precio total de los productos calculado por api

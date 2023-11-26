@@ -1,19 +1,5 @@
 import mongoose from "mongoose";
-/*[
-    {
-        "id": 1,
-        "products": [
-          {
-            "id": 10,
-            "qty": 3
-          },
-        ]
-      },
-      {
-        "id": 2,
-        "products": []
-      }
-    ]*/
+
 const cartSchema = new mongoose.Schema({
     products: {
         type: [

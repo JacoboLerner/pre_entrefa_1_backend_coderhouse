@@ -120,12 +120,12 @@ DELETE /api/carts/:id
 
 Tickets :white_check_mark: (otro metodo)
 
-POST /api/tickets  
-GET /api/tickets
+POST /api/tickets  :white_check_mark:
+GET /api/tickets :white_check_mark:
 
 Documentación y Testing (funcional):
 
-Users (Pendiente)
+Users (:white_check_mark: falto el de recupero de contraseña u cambio de role, tiene funcionalidad pero hay problematicas con el testeo ya que habria que restructurar proyecto)
 
 POST /api/auth/register para registrarse en la app :heavy_check_mark:
 
@@ -133,9 +133,9 @@ POST /api/auth/login para iniciar sesión en la app :heavy_check_mark:
 
 POST /api/auth/signout para cerrar sesión en la app :heavy_check_mark:
 
-PUT /api/auth para actualizar la contraseña del usuario logueado (no olvidar el endpoint para el envío del correo de recuperación).
+PUT /api/auth para actualizar la contraseña del usuario logueado (no olvidar el endpoint para el envío del correo de recuperación).   :white_check_mark:
 
-PUT /api/auth/prem para actualizar el rol a premium
+PUT /api/auth/prem para actualizar el rol a premium :white_check_mark:
 
 -Testing performance (Pendiente-)
 
@@ -183,9 +183,9 @@ Error personalizado para cada capa. :heavy_check_mark:
 
 Generar 4 nodos optimizados con brotli. :heavy_check_mark:
 
--Persistencia y sesiones (Pendiente)
+-Persistencia y sesiones (:heavy_check_mark: , se pudo hacer la configuracion pero no se pudo aplicar ya que no sea usa repository)
 
-Debe funcionar todo para mongoDB, pero debe tener aplicado el patrón correspondiente para poder realizar el cambio fácilmente (escalabilidad).
+Debe funcionar todo para mongoDB, pero debe tener aplicado el patrón correspondiente para poder realizar el cambio fácilmente (escalabilidad). 
 
 
 Entregable

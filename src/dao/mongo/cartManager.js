@@ -92,10 +92,10 @@ export default class CartManager{
         try {
             const updatedCart = await CartModel.findOneAndUpdate(
                 { _id: cid },
-                { products: prod }
+                { products: prod },{new:true}
             );
            logger.INFO("Carrito actualizado", updatedCart);
-            return updatedCart;
+           return { status: 200, response: "Carrito actualizado." }
         } catch (error) {
             logger.ERROR(error);
         }
@@ -159,7 +159,7 @@ export default class CartManager{
 
             await CartModel.deleteOne({ _id: id })
 
-            return { status: 200, response: "Carito borrado." }
+            return { status: 200, response: "Carrito borrado." }
         }catch(error){
             logger.ERROR(`error: ${error}`)
         }

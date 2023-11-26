@@ -35,13 +35,15 @@ router.post('/login',passport.authenticate("login",{failureRedirect:"/faillogin"
 
 });
 
-router.get('/logout', isAuthenticated, (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.log(err.message);
-        }
-        res.redirect('/');
-    });
+router.get('/logout',  (req, res) => {
+    const cookie = req.cookies["coderCookieToken"];
+    try{ 
+        return res.status(200).clearCookie("coderCookieToken").json({ status: "success", message: "Signed out" });
+    }catch(error){
+        error.where = "sessionsRouter";
+        res.clearCookie("coderCookieToken");
+    }
+
 });
 //rutas para recuperacion u cambio de contraseñas
 router.get('/forget_password', async (req, res) => {
@@ -154,7 +156,7 @@ router.delete('/:uid', async (req, res) => {
 
 
 router.get('/premium/:uid', async (req, res) => {
-    const userid = req.session.user._id
+    const userid = req.session.user.user._id
 
 
     // Verificar que el rol proporcionado sea válido (usuario o premium)

@@ -25,6 +25,13 @@ export const DeleteCartById = async(cid)=>{
     if (!result) return new Error("Carrito no se pudo vaciar!");
     return result
 }
+
+export const DeleteCart = async(cid)=>{
+    const result = await CartDao.DeleteCart(cid);
+    if (!result) return new Error("Carrito no se pudo vaciar!");
+    return result
+}
+
 export const ModifyProductInCart = async(cid, prod)=>{
     const result = await CartDao.ModifyProductInCart(cid, prod);
     if (!result) return new Error("Producto no se pudo modificar!");

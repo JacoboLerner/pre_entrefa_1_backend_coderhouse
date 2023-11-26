@@ -1,0 +1,47 @@
+
+
+
+config:
+    plugins:
+          metrics-by-endpoint: {}
+    target: 'http://localhost:8082'  # Reemplaza esto con la URL de tu servidor
+    phases: [       
+      -duration: 30,
+      arrivalRate: 50]
+
+
+scenarios:
+  - name: 'Pruebas'
+    flow:
+      - log: "Test"
+      - post: "d"
+        url: '/api/sessions/login'
+        json:
+          username: 'adminCoder@coder.com'
+          password: 'adminCod3r123'
+        capture:
+        - json: '$.token'
+          as: 'authToken'
+      - log: "Test"
+      - post: "d"
+        url: '/api/products/test'
+        json: 
+          title: 'Test Product'
+          description: 'This is a test product.'
+          price: 20.0
+          stock: 10
+          code: 'ABC123'
+          category: 'test'
+          thumbnail: 'product-thumbnail.jpg'
+        headers:
+          Authorization: 'Bearer {{ authToken }}'
+      - log: "Test"
+      - delete: "s"
+        url: '/api/products/test/{{ product_id }}'
+        headers:
+          Authorization: 'Bearer {{ authToken }}'
+      - log: "Test"
+      - get: "s"
+        url: '/api/sessions/logout'
+        headers:
+          Authorization: 'Bearer {{ authToken }}'

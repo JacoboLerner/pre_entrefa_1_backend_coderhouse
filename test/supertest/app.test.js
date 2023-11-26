@@ -6,7 +6,7 @@ const requester = supertest(`http://localhost:${config.port}/api`)
 describe(
     "Testeando los recursos de Ecommerce",
     ()=>{
-        describe("Testeando flujo de operaciones de Ecommerce",()=>{
+        describe("Testeando flujo de operaciones de Ecommerce,productos y Usuario",()=>{
             let id = null
             let uid = null;
             let pid = null;
@@ -76,6 +76,12 @@ describe(
                 expect(statusCode).to.be.equals(200);
                 //devuelve id para asegurar que es borrado
             })
+            it("Testeando que se desloguee usuario",async()=>{
+              let result = await requester.get("/sessions/logout").set("coderCookieToken", [cookie.name + "=" + cookie.value]);
+              let { statusCode } = result;
+              expect(statusCode).to.be.equals(200);;
+              //devuelve id para asegurar que es borrado
+          })
             it("Testeando que se borran los datos de prueba de usuario",async()=>{
                 let result = await requester.delete("/sessions/"+uid)
                 let { _body } = result;
@@ -84,7 +90,43 @@ describe(
             })
               
         })
-        
+        describe("Testeando flujo de operaciones de Ecommerce,carts",()=>{
+          let id = null
+          let uid = null;
+          let pid = null;
+          let cookie = null;
+          let user=null
+          it("Testeando que devuelva array de carts",async()=>{
+            const response =await requester.get("/carts")
+            const {_body}=response
+       
+            expect(Array.isArray(_body)).to.be.equals(true);
+        })
+        it("Testeando que se crea un cart y devuelve propiedad _id",async()=>{   
+          const response =await requester.post("/carts/test");
+          const { _body}=response
+          const cart =_body
+          pid=cart._id
+          expect(_body).to.have.property('_id')                 
+      })
+      it("Testeando que devuelva array productos de cart",async()=>{
+        const response =await requester.get("/carts/test/"+pid)
+        const {_body}=response
+        expect(_body._id).to.be.equals(pid) ;
+    })
+    it("Testeando que agregue prodcto a cart",async()=>{
+      let data={title:"PS1",description: "La consola del futuro", price:1000, thumbnail:"sony.com",code:"la beriso", stock:2, category:"electrodomesticos"} ;
+      const response =await requester.put("/carts/test/"+pid).send(data)
+      const {_body,statusCode}=response
+      expect(statusCode).to.be.equals(200);})
+
+      it("Testeando que borre cart",async()=>{
+        const response =await requester.delete("/carts/test/"+pid)
+        const {_body,statusCode}=response
+        expect(statusCode).to.be.equals(200);})
+  
+      })
+      
         //describe("Testeando Cart",()=>{
 
        // })

@@ -21,6 +21,13 @@ export const DeleteCartById = async(cid)=>{
     const result = await CartService.emptyCart(cid);
     return result
 }
+
+export const DeleteCart = async(cid)=>{
+    const result = await CartService.deleteCart(cid);
+    return result
+}
+
+
 export const ModifyProductInCart = async(cid, prod)=>{
     const result = await CartService.updateWholeCart(cid, prod);
     return result

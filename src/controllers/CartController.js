@@ -89,6 +89,13 @@ export const DeleteCartById= async (req, res) => {
     res.send(deletedCart);
 }
 
+export const DeleteCart= async (req, res) => {
+    const cid = req.params.cid;
+    const deletedCart = await CartServices.DeleteCart(cid);
+    logger.INFO(deletedCart);
+    res.send(deletedCart);
+}
+
 export const ModifyProductInCart =  async (req, res) => {
     const cid = req.params.cid;
     const prod = req.body;

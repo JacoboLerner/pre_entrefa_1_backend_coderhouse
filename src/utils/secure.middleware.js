@@ -1,10 +1,16 @@
 import config from "../../env.js"
 import bcrypt from 'bcryptjs'
+import jwt from "jsonwebtoken";
 
 const isAuthenticated = (req, res, next) => {
-    if (req.session.user) {
-        next();
-    } else {
+    const cookie = req.cookies["coderCookieToken"];
+    if (cookie) {
+        const user = jwt.verify(cookie,process.env.PRIVATE_KEY);
+        if (user) {
+          req.session.user = user
+          return next();
+        }
+      } else {
         res.redirect('/');
     }
 };

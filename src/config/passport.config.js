@@ -29,8 +29,9 @@ const initializePassport =()=>{
         secretOrKey: config.privateKey,
     }, async(jwt_payload,done)=>{
         try{
+            console.log(jwt_payload);
             return done(null,jwt_payload);
-            
+ 
         }
         catch(err){
             return done(err)
